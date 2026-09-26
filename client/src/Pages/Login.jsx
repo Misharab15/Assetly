@@ -8,7 +8,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import GoogleIcon from "../assets/googleicon.png";
 
 const Login = () => {
-  const { setUserData, setIsLoggedIn, getUserData } = useContext(AppContext);
+  const { setUserData, setIsLoggedIn } = useContext(AppContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,6 +17,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!showPassword) return;
 
@@ -34,6 +35,15 @@ const Login = () => {
     }));
   };
 
+  // Quick fill demo credentials function
+  const handleDemoFill = () => {
+    setFormData({
+      email: "dummy123@gmail.com", // Replace with your actual dummy account email
+      password: "11223344", // Replace with your actual dummy account password
+    });
+    toast.info("Demo credentials loaded! Click Sign In.");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isLoading) return;
@@ -48,17 +58,16 @@ const Login = () => {
       if (data.success) {
         setAccessToken(data.access_token);
           
-          // Extract username safely whether it's flat or inside user_metadata
-          const formattedUser = {
-            id: data.user.id,
-            email: data.user.email,
-            username: data.user.user_metadata?.username || data.user.username || "User"
-          };
+        const formattedUser = {
+          id: data.user.id,
+          email: data.user.email,
+          username: data.user.user_metadata?.username || data.user.username || "User"
+        };
 
-          setUserData(formattedUser);
-          setIsLoggedIn(true);
-          toast.success("Login successful!");
-          navigate("/home");
+        setUserData(formattedUser);
+        setIsLoggedIn(true);
+        toast.success("Login successful!");
+        navigate("/home");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
@@ -82,6 +91,15 @@ const Login = () => {
         <h2 className="text-center text-[#00e238] text-3xl font-bold mb-6">
           Welcome to Assetly
         </h2>
+
+        {/* Demo Account Quick Button */}
+        <button
+          type="button"
+          onClick={handleDemoFill}
+          className="w-full mb-4 bg-gray-100 border border-dashed border-gray-400 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-200 transition text-sm cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>Login with Demo Account</span>
+        </button>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
@@ -167,7 +185,7 @@ const Login = () => {
 
         <button
           onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center border border-gray-300 rounded-lg py-2.5 hover:bg-gray-100 transition"
+          className="w-full flex items-center justify-center border border-gray-300 rounded-lg py-2.5 hover:bg-gray-100 transition cursor-pointer"
         >
           <img src={GoogleIcon} alt="Google Logo" className="w-5 h-5 mr-2" />
           Sign in with Google
