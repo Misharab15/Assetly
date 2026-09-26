@@ -147,20 +147,19 @@ export default function Stocks() {
 
     return (
         <div className='flex flex-col'>
-            <div className='bg-[#0d0d0d] text-white flex flex-row items-stretch p-6 gap-8 pt-10'>
-                <div className='flex flex-col w-1/2 gap-6'>
-
-                    {/* Market Overview Card */}
+            {/* Main top section: Stack vertically on mobile, side-by-side on large screens */}
+            <div className='bg-[#0d0d0d] text-white flex flex-col lg:flex-row items-stretch p-4 sm:p-6 gap-8 pt-10'>
+                
+                {/* Left Column: Full width on mobile, 50% on large screens */}
+                <div className='flex flex-col w-full lg:w-1/2 gap-6'>
                     {/* Market Overview Card */}
                     <div className='bg-[#181818] p-6 rounded-2xl shadow-lg border border-[#262626] transition-colors duration-200 hover:border-gray-700 min-h-[148px] flex flex-col justify-between'>
-
                         <h2 className='text-lg font-bold text-white tracking-wide'>
                             Market Overview
                         </h2>
 
                         {isMarketDataLoading ? (
-                            <div className='grid grid-cols-2 gap-4 text-gray-300 pt-2'>
-
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-300 pt-2'>
                                 {/* Apple Skeleton */}
                                 <div className='bg-[#202020] p-4 rounded-xl border border-[#2a2a2a]'>
                                     <div className='h-3 bg-[#2a2a2a] animate-pulse rounded w-16 mb-2'></div>
@@ -172,27 +171,22 @@ export default function Stocks() {
                                     <div className='h-3 bg-[#2a2a2a] animate-pulse rounded w-16 mb-2'></div>
                                     <div className='h-6 bg-[#2a2a2a] animate-pulse rounded w-24'></div>
                                 </div>
-
                             </div>
                         ) : (
-                            <div className='grid grid-cols-2 gap-4 text-gray-300 pt-2'>
-
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-300 pt-2'>
                                 {/* Apple */}
                                 <div className='bg-[#202020] p-4 rounded-xl border border-[#2a2a2a]'>
-
                                     <p className='text-xs uppercase font-semibold text-gray-400 tracking-wider mb-1'>
                                         Apple
                                     </p>
-
                                     <p className='text-xl font-bold text-white'>
                                         {marketOverview.top1?.change != null
                                             ? `${marketOverview.top1.price.toFixed(2)}$`
                                             : "--"
                                         }
                                     </p>
-
                                     <div
-                                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${marketOverview.top1?.change >= 0
+                                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium mt-1 ${marketOverview.top1?.change >= 0
                                             ? "bg-green-900/30 text-green-400"
                                             : "bg-red-900/30 text-red-400"
                                             }`}
@@ -202,31 +196,26 @@ export default function Stocks() {
                                         ) : (
                                             <LuTrendingDown size={14} />
                                         )}
-
                                         {marketOverview.top1
                                             ? `${marketOverview.top1.change.toFixed(2)}%`
                                             : "--"
                                         }
                                     </div>
-
                                 </div>
 
                                 {/* NVIDIA */}
                                 <div className='bg-[#202020] p-4 rounded-xl border border-[#2a2a2a]'>
-
                                     <p className='text-xs uppercase font-semibold text-gray-400 tracking-wider mb-1'>
                                         NVIDIA
                                     </p>
-
                                     <p className='text-xl font-bold text-white'>
                                         {marketOverview.top2?.change != null
                                             ? `${marketOverview.top2.price.toFixed(2)}$`
                                             : "--"
                                         }
                                     </p>
-
                                     <div
-                                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${marketOverview.top2?.change >= 0
+                                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium mt-1 ${marketOverview.top2?.change >= 0
                                             ? "bg-green-900/30 text-green-400"
                                             : "bg-red-900/30 text-red-400"
                                             }`}
@@ -236,22 +225,18 @@ export default function Stocks() {
                                         ) : (
                                             <LuTrendingDown size={14} />
                                         )}
-
                                         {marketOverview.top2
                                             ? `${marketOverview.top2.change.toFixed(2)}%`
                                             : "--"
                                         }
                                     </div>
-
                                 </div>
-
                             </div>
                         )}
-
                     </div>
 
                     {/* Line Chart */}
-                    <div className='bg-[#181818] p-6 rounded-2xl shadow-lg'>
+                    <div className='bg-[#181818] p-4 sm:p-6 rounded-2xl shadow-lg'>
                         <h2 className='text-xl font-semibold mb-4 text-white'>
                             Stock Asset Trend
                         </h2>
@@ -261,7 +246,7 @@ export default function Stocks() {
                             </div>
                         ) : (
                             <ResponsiveContainer width="100%" height={200}>
-                                <LineChart data={snapshotData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                                <LineChart data={snapshotData} margin={{ top: 20, right: 10, left: -20, bottom: 5 }}>
                                     <XAxis dataKey="month" stroke="#aaa" interval={0} tick={{ fontSize: 12 }} padding={{ left: 20, right: 20 }} />
                                     <YAxis stroke="#aaa" tick={{ fontSize: 12 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                                     <Tooltip content={<CustomToolTipLine />} />
@@ -278,25 +263,25 @@ export default function Stocks() {
                     </div>
                 </div>
 
-                {/* Pie Chart Skeleton */}
-                <div className='flex flex-col gap-6 w-1/2'>
-                    <div className='flex-1 flex flex-col items-center justify-center bg-[#181818] p-6 rounded-2xl shadow-lg min-h-[300px]'>
+                {/* Right Column: Full width on mobile, 50% on large screens */}
+                <div className='flex flex-col gap-6 w-full lg:w-1/2'>
+                    <div className='flex-1 flex flex-col items-center justify-center bg-[#181818] p-4 sm:p-6 rounded-2xl shadow-lg min-h-[300px]'>
                         {isPortfolioLoading ? (
-                            <div className='relative w-64 h-64 flex items-center justify-center animate-pulse'>
-                                <div className='w-56 h-56 rounded-full border-[18px] border-[#2a2a2a] flex items-center justify-center'>
-                                    <div className='h-8 bg-[#2a2a2a] rounded w-24'></div>
+                            <div className='relative w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center animate-pulse'>
+                                <div className='w-40 h-40 sm:w-56 sm:h-56 rounded-full border-[14px] sm:border-[18px] border-[#2a2a2a] flex items-center justify-center'>
+                                    <div className='h-6 sm:h-8 bg-[#2a2a2a] rounded w-20 sm:w-24'></div>
                                 </div>
                             </div>
                         ) : (
-                            <div className='relative w-full max-w-md h-[280px]'>
+                            <div className='relative w-full max-w-md h-[240px] sm:h-[280px]'>
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart margin={{ top: 20, bottom: 20 }}>
+                                    <PieChart margin={{ top: 10, bottom: 10 }}>
                                         <Pie
                                             data={chartData}
                                             cx="50%"
                                             cy="50%"
-                                            innerRadius={80}
-                                            outerRadius={120}
+                                            innerRadius={70}
+                                            outerRadius={100}
                                             dataKey="value"
                                             label={({ percent, symbol }) => percent > 0.05 ? symbol : ""}
                                             labelLine={false}
@@ -314,7 +299,7 @@ export default function Stocks() {
                                 </ResponsiveContainer>
 
                                 <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>
-                                    <div className='text-white text-2xl font-semibold'>
+                                    <div className='text-white text-xl sm:text-2xl font-semibold'>
                                         {total.toLocaleString('en-US')} $
                                     </div>
                                 </div>
@@ -325,11 +310,12 @@ export default function Stocks() {
             </div>
 
             {/* Table Section */}
-            <div className="mx-full max-w-6xl px-6">
-                <div className='flex items-center justify-between mb-3'>
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+                {/* Header and Search: Stack vertically on mobile */}
+                <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 mt-6'>
                     <h1 className='text-white font-semibold text-xl'>All Assets</h1>
-                    <div className='flex items-center gap-3 bg-[#181818] p-2 rounded-md w-full sm:w-1/4'>
-                        <LuSearch size={20} className='text-white' />
+                    <div className='flex items-center gap-3 bg-[#181818] p-2 rounded-md w-full sm:w-64'>
+                        <LuSearch size={20} className='text-white min-w-[20px]' />
                         <input
                             type='text'
                             placeholder='Search Pairs'
@@ -340,49 +326,50 @@ export default function Stocks() {
                     </div>
                 </div>
 
-                <div className='rounded-2xl overflow-hidden bg-[#181818] mt-6 mb-12 overflow-x-auto'>
-                    <table className='w-full'>
+                {/* Added overflow-x-auto to ensure the table scrolls horizontally on tiny screens */}
+                <div className='rounded-2xl overflow-hidden bg-[#181818] mt-4 mb-12 overflow-x-auto border border-[#262626]'>
+                    <table className='w-full min-w-[400px]'>
                         <thead className='text-sm text-[#ababab] bg-[#1f1f1f]'>
                             <tr>
-                                <th className='pl-10 py-2.5 text-left'>Pair</th>
-                                <th className='py-2.5 text-right'>Units</th>
-                                <th className='py-2.5 text-right'>Price</th>
-                                <th className='pr-5 py-2.5 text-right'>%</th>
+                                <th className='pl-6 sm:pl-10 py-3 text-left font-medium'>Pair</th>
+                                <th className='py-3 text-right font-medium'>Units</th>
+                                <th className='py-3 text-right font-medium'>Price</th>
+                                <th className='pr-4 sm:pr-5 py-3 text-right font-medium'>%</th>
                             </tr>
                         </thead>
                         <tbody>
                             {isPortfolioLoading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i} className='border-b border-[#2a2a2a] animate-pulse'>
-                                        <td className='px-4 py-3.5'>
+                                        <td className='px-4 sm:px-6 py-4'>
                                             <div className='flex items-center gap-3'>
                                                 <div className='rounded-full h-3 w-3 bg-[#2a2a2a]'></div>
                                                 <div className='h-4 bg-[#2a2a2a] rounded w-16'></div>
                                             </div>
                                         </td>
-                                        <td className='py-3.5 px-4 text-right'>
+                                        <td className='py-4 px-4 text-right'>
                                             <div className='h-4 bg-[#2a2a2a] rounded w-12 ml-auto'></div>
                                         </td>
-                                        <td className='py-3.5 px-4 text-right'>
+                                        <td className='py-4 px-4 text-right'>
                                             <div className='h-4 bg-[#2a2a2a] rounded w-12 ml-auto'></div>
                                         </td>
-                                        <td className='py-3.5 px-4 pr-5 text-right'>
+                                        <td className='py-4 px-4 sm:pr-5 text-right'>
                                             <div className='h-4 bg-[#2a2a2a] rounded w-10 ml-auto'></div>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 displayData.map((row, index) => (
-                                    <tr key={index} className='text-sm text-white border-b border-[#2a2a2a] last:border-b-0 hover:bg-[#202020]'>
-                                        <td className='px-4 py-2.5 select-none'>
+                                    <tr key={index} className='text-sm text-gray-200 border-b border-[#2a2a2a] last:border-b-0 hover:bg-[#202020] transition-colors'>
+                                        <td className='px-4 sm:px-6 py-3 select-none'>
                                             <div className='flex items-center gap-3'>
-                                                <div className='rounded-full h-3 w-3' style={{ background: COLORS[index] }}></div>
-                                                <span>{row.symbol}</span>
+                                                <div className='rounded-full h-3 w-3 shrink-0' style={{ background: COLORS[index] }}></div>
+                                                <span className='font-medium'>{row.symbol}</span>
                                             </div>
                                         </td>
                                         <td className='py-3 px-4 text-right select-none'>{row.value.toFixed(2)}</td>
-                                        <td className='py-3 px-4 text-right select-none'>{row.price.toFixed(2)}</td>
-                                        <td className='py-3 px-4 pr-5 text-right select-none'>
+                                        <td className='py-3 px-4 text-right select-none'>${row.price.toFixed(2)}</td>
+                                        <td className='py-3 px-4 sm:pr-5 text-right select-none'>
                                             {total > 0
                                                 ? ((row.value / total) * 100).toFixed(2)
                                                 : "0.00"}%

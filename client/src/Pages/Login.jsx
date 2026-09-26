@@ -46,11 +46,19 @@ const Login = () => {
       });
 
       if (data.success) {
-        setAccessToken(data.access_token); // from axios.js
-        setUserData(data.user);
-        setIsLoggedIn(true);
-        toast.success("Login successful!");
-        navigate("/home");
+        setAccessToken(data.access_token);
+          
+          // Extract username safely whether it's flat or inside user_metadata
+          const formattedUser = {
+            id: data.user.id,
+            email: data.user.email,
+            username: data.user.user_metadata?.username || data.user.username || "User"
+          };
+
+          setUserData(formattedUser);
+          setIsLoggedIn(true);
+          toast.success("Login successful!");
+          navigate("/home");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");

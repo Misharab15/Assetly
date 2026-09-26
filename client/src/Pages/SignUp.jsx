@@ -37,6 +37,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return; // Stop the submission immediately
+    }
+
     setIsLoading(true);
 
     try {
@@ -121,6 +127,7 @@ const SignUp = () => {
                 onChange={handleChange}
                 placeholder="Enter your password"
                 required
+                minLength={6}
                 className="w-full p-2 pr-10 bg-[#f9f9f9] border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00e238]"
               />
 
@@ -188,5 +195,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-
