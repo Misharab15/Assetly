@@ -3,14 +3,20 @@ import supabase from '../config/supabaseClient.js';
 // =========================================================
 // REFRESH COOKIE CONFIG
 // =========================================================
+// const REFRESH_COOKIE_OPTS = {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === 'production',
+//     sameSite: 'lax',
+//     path: '/api/auth',
+//     maxAge: 7 * 24 * 60 * 60 * 1000,
+// };
 const REFRESH_COOKIE_OPTS = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/api/auth',
+    secure: true, // Required when sameSite is 'none' (and mandatory on Vercel's HTTPS)
+    sameSite: 'none', // Allows the cookie to pass between your distinct frontend and backend Vercel domains
+    path: '/', // Makes the cookie available across your entire API domain
     maxAge: 7 * 24 * 60 * 60 * 1000,
 };
-
 // =========================================================
 // SIGNUP / REGISTER
 // =========================================================
