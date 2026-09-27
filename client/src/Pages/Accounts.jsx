@@ -338,9 +338,10 @@ export default function Accounts() {
     }
 
     return (
-        <div className="flex bg-[#0d0d0d] pt-20 pl-5 pr-5 overflow-x-hidden w-full max-w-[100vw] min-h-screen">
-            <div className="flex flex-col w-full m-4 gap-4">
-                {/* Header: Adjusted to stack on mobile and be row on larger screens */}
+        <div className="flex bg-[#0d0d0d] pt-20 px-4 sm:px-6 overflow-x-hidden w-full max-w-[100vw] min-h-screen box-border">
+            {/* Replaced fixed left/right padding and margins with clean responsive padding */}
+            <div className="flex flex-col w-full max-w-6xl mx-auto gap-4">
+                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 100, x: 0 }}
@@ -353,25 +354,25 @@ export default function Accounts() {
                         <p className="text-sm text-[#ababab] mt-1">Manage your exchange connections and account details</p>
                     </div>
 
-                    {/* Dropdown Button: Full width on mobile */}
+                    {/* Dropdown Button */}
                     <div className="relative dropdown-container w-full sm:w-auto">
                         <button
                             onClick={() => setShowDropdown(!showDropdown)}
-                            className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                            className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer"
                         >
                             <FaPlus size={12} />
                             Add Exchange
                             <FaChevronDown size={12} className={`transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
                         </button>
 
-                        {/* Dropdown Menu: Full width on mobile */}
+                        {/* Dropdown Menu */}
                         {showDropdown && (
                             <div className="absolute right-0 mt-2 w-full sm:w-56 bg-[#181818] border border-[#2a2a2a] rounded-lg shadow-xl z-50">
                                 {exchangeTypes.map(exchange => (
                                     <button
                                         key={exchange.id}
                                         onClick={() => handleSelectExchange(exchange.id)}
-                                        className="w-full text-left px-4 py-3 text-sm text-white hover:bg-[#202020] transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center gap-3"
+                                        className="w-full text-left px-4 py-3 text-sm text-white hover:bg-[#202020] transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center gap-3 cursor-pointer"
                                     >
                                         <div
                                             className="rounded-full h-2.5 w-2.5"
@@ -409,7 +410,7 @@ export default function Accounts() {
                             </h2>
                             <button
                                 onClick={handleCancel}
-                                className="text-[#ababab] hover:text-white text-sm"
+                                className="text-[#ababab] hover:text-white text-sm cursor-pointer"
                             >
                                 ✕
                             </button>
@@ -437,13 +438,13 @@ export default function Accounts() {
                             <div className="flex gap-3 mt-6">
                                 <button
                                     onClick={handleSubmit}
-                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer"
                                 >
                                     {editingExchange ? 'Update' : 'Save'}
                                 </button>
                                 <button
                                     onClick={handleCancel}
-                                    className="bg-[#202020] hover:bg-[#2a2a2a] text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                                    className="bg-[#202020] hover:bg-[#2a2a2a] text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
@@ -467,12 +468,12 @@ export default function Accounts() {
                                 <table className="w-full">
                                     <thead className="text-xs font-medium text-[#ababab] bg-[#1f1f1f]">
                                         <tr>
-                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none">Exchange</th>
-                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none">Status</th>
-                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none">Values</th>
-                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none">Created At</th>
-                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none">Updated At</th>
-                                            <th className="py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none">Actions</th>
+                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none whitespace-nowrap">Exchange</th>
+                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none whitespace-nowrap">Status</th>
+                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none whitespace-nowrap">Values</th>
+                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none whitespace-nowrap">Created At</th>
+                                            <th className="py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none whitespace-nowrap">Updated At</th>
+                                            <th className="py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none whitespace-nowrap">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -481,43 +482,43 @@ export default function Accounts() {
                                                 key={index}
                                                 className="text-sm text-white border-b border-[#2a2a2a] last:border-b-0 hover:bg-[#202020]"
                                             >
-                                                <td className="py-3 px-4 select-none">
+                                                <td className="py-3 px-4 select-none whitespace-nowrap">
                                                     <div className="flex items-center gap-3">
                                                         <div
-                                                            className="rounded-full h-3 w-3"
+                                                            className="rounded-full h-3 w-3 shrink-0"
                                                             style={{ background: exchange.color }}
                                                         ></div>
                                                         <span>{exchange.label}</span>
                                                     </div>
                                                 </td>
-                                                <td className="py-3 px-4 select-none">
+                                                <td className="py-3 px-4 select-none whitespace-nowrap">
                                                     <span className="px-2 py-0.5 rounded-md text-xs bg-green-500/20 text-green-400">
                                                         Connected
                                                     </span>
                                                 </td>
-                                                <td className="py-3 px-4 select-none">
+                                                <td className="py-3 px-4 select-none whitespace-nowrap">
                                                     <span className="text-xs text-[#ababab] font-mono">
                                                         {getFieldValues(exchange)}
                                                     </span>
                                                 </td>
-                                                <td className="py-3 px-4 select-none text-xs text-[#ababab]">
+                                                <td className="py-3 px-4 select-none text-xs text-[#ababab] whitespace-nowrap">
                                                     {formatDate(exchange.createdAt)}
                                                 </td>
-                                                <td className="py-3 px-4 select-none text-xs text-[#ababab]">
+                                                <td className="py-3 px-4 select-none text-xs text-[#ababab] whitespace-nowrap">
                                                     {formatDate(exchange.updatedAt)}
                                                 </td>
-                                                <td className="py-3 px-4 text-right">
+                                                <td className="py-3 px-4 text-right whitespace-nowrap">
                                                     <div className="flex items-center justify-end gap-2">
                                                         <button
                                                             onClick={() => handleEdit(exchange)}
-                                                            className="text-[#ababab] hover:text-[#3b82f6] transition-colors p-1.5"
+                                                            className="text-[#ababab] hover:text-[#3b82f6] transition-colors p-1.5 cursor-pointer"
                                                             title="Edit"
                                                         >
                                                             <MdEdit size={16} />
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteExchange(exchange.id)}
-                                                            className="text-[#ababab] hover:text-red-400 transition-colors p-1.5"
+                                                            className="text-[#ababab] hover:text-red-400 transition-colors p-1.5 cursor-pointer"
                                                             title="Delete"
                                                         >
                                                             <MdDelete size={16} />

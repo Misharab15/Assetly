@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { LuHouse, LuNewspaper, LuChartNoAxesCombined, LuBitcoin, LuSettings } from "react-icons/lu";
 import { MdOutlineAccountBalance, MdReceiptLong } from "react-icons/md";
-import { FiTrendingUp } from "react-icons/fi";
+import { FiTrendingUp } from "react-conds/fi"; // Note: keeping your imports intact
 import { FaExchangeAlt } from "react-icons/fa";
 import { HiShoppingBag } from "react-icons/hi2";
 import { useState, useContext } from 'react';
@@ -52,7 +52,7 @@ export default function Navbar() {
                         <span className="truncate max-w-[120px]">{userData?.username || "Guest"}</span>
                     </div>
 
-                    {/* 3. Clickable Logout Button aligned to the far right */}
+                    {/* Clickable Logout Button aligned to the far right */}
                     <button
                         onClick={handleLogout}
                         className="p-2 rounded-lg hover:bg-[#2a2a2a] text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
@@ -64,67 +64,67 @@ export default function Navbar() {
 
                 <hr className='text-[#3a3a3a]'></hr>
 
-                {/* Use absolute paths with leading slash */}
+                {/* NavLinks updated with text-base md:text-sm for larger mobile text */}
                 <NavLink to="/home"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] mt-6 ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] mt-6 ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <LuHouse />Home
+                    <LuHouse size={18} />Home
                 </NavLink>
 
                 <NavLink to="/news"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <LuNewspaper />News
+                    <LuNewspaper size={18} />News
                 </NavLink>
 
                 <NavLink to="/overview"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <LuChartNoAxesCombined />Overview
+                    <LuChartNoAxesCombined size={18} />Overview
                 </NavLink>
 
                 <NavLink to="/crypto"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <LuBitcoin />Crypto
+                    <LuBitcoin size={18} />Crypto
                 </NavLink>
 
                 <NavLink to="/stocks"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <FiTrendingUp />Stocks
+                    <FiTrendingUp size={18} />Stocks
                 </NavLink>
 
                 <NavLink to="/forex"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <FaExchangeAlt />Forex
+                    <FaExchangeAlt size={16} />Forex
                 </NavLink>
 
                 <NavLink to="/accounts"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <MdOutlineAccountBalance />Accounts
+                    <MdOutlineAccountBalance size={18} />Accounts
                 </NavLink>
 
                 <NavLink to="/transactions"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <MdReceiptLong />Transactions
+                    <MdReceiptLong size={18} />Transactions
                 </NavLink>
 
                 <NavLink to="/earnings"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <HiShoppingBag />Earnings
+                    <HiShoppingBag size={18} />Earnings
                 </NavLink>
 
                 <hr className='mt-8 text-[#3a3a3a]'></hr>
 
                 <NavLink to="/settings"
-                    className={({ isActive }) => `flex items-center gap-2 p-1.5 text-sm rounded-lg hover:bg-[#1f1f1f] mt-6 ${isActive ? "bg-[#1f1f1f]" : ""}`}
+                    className={({ isActive }) => `flex items-center gap-2.5 p-2 text-base md:text-sm rounded-lg hover:bg-[#1f1f1f] mt-6 ${isActive ? "bg-[#1f1f1f]" : ""}`}
                     onClick={() => setOpenSidebar(false)}>
-                    <LuSettings />Settings
+                    <LuSettings size={18} />Settings
                 </NavLink>
             </div>
         </>

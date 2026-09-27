@@ -231,7 +231,7 @@ const Transactions = () => {
 
   return (
     <div className="mx-full max-w-6xl px-6">
-      {/* Header (Responsive Layout Fix) */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pt-12 pb-6">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className='text-white font-semibold text-xl'>Transactions</h1>
@@ -264,7 +264,7 @@ const Transactions = () => {
         </div>
       </div>
 
-      {/* Filter Toolbar (Centered on mobile fix) */}
+      {/* Filter Toolbar: 2x2 Grid on mobile, inline flex row on desktop */}
       <div className='flex flex-col sm:flex-row gap-4 items-center justify-between mb-7'>
         <div className='flex items-center gap-3 bg-[#181818] p-2 rounded-md w-full sm:w-1/3'>
           <LuSearch size={20} className='text-white shrink-0' />
@@ -277,11 +277,11 @@ const Transactions = () => {
           />
         </div>
 
-        <div className='flex flex-wrap gap-3 w-full sm:w-auto justify-center sm:justify-end'>
+        <div className='grid grid-cols-2 sm:flex sm:flex-wrap gap-3 w-full sm:w-auto'>
           <select
             value={selectedAssetClass}
             onChange={(e) => setSelectedAssetClass(e.target.value)}
-            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer'
+            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer w-full sm:w-auto'
           >
             <option value="">All Asset Classes</option>
             <option value="crypto">Crypto</option>
@@ -292,7 +292,7 @@ const Transactions = () => {
           <select
             value={selectedDates}
             onChange={(e) => setSelectedDates(e.target.value)}
-            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer'
+            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer w-full sm:w-auto'
           >
             <option value="">All Dates</option>
             <option value="today">Today</option>
@@ -303,7 +303,7 @@ const Transactions = () => {
           <select
             value={selectedAccounts}
             onChange={(e) => setSelectedAccounts(e.target.value)}
-            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer'
+            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer w-full sm:w-auto'
           >
             <option value="">All Accounts</option>
             {getUniqueAccounts().map(account => (
@@ -314,7 +314,7 @@ const Transactions = () => {
           <select
             value={selectedTypes}
             onChange={(e) => setSelectedTypes(e.target.value)}
-            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer'
+            className='bg-[#181818] text-sm text-[#ababab] p-2 rounded-md focus:outline-none border-none hover:bg-[#111] cursor-pointer w-full sm:w-auto'
           >
             <option value="">All Types</option>
             <option value="Incoming">Incoming (Buy)</option>
@@ -346,7 +346,7 @@ const Transactions = () => {
         <TransactionsSkeleton />
       ) : (
         <>
-          {/* Summary Stats (Overflow text fix) */}
+          {/* Summary Stats */}
           {transactions && transactions.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f] min-w-0">
