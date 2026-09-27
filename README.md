@@ -7,6 +7,18 @@ Assetly is a full-stack personal finance platform that brings stocks, cryptocurr
 The application is designed to give users a clear view of their financial activity and market performance while providing secure authentication, portfolio management, and automated financial data updates.
 
 ---
+DEMO : https://github.com/sajjalf23/Assetly/blob/main/Assetly-Demo%20(1).mp4
+
+<img width="1440" height="777" alt="Screenshot 2026-09-27 at 11 21 05 PM" src="https://github.com/user-attachments/assets/7e624ec6-d048-4638-b5df-93acc6906054" />
+<img width="1439" height="774" alt="Screenshot 2026-09-27 at 11 21 39 PM" src="https://github.com/user-attachments/assets/59d8e695-4390-4211-a4d6-7536eb06465e" />
+<img width="1417" height="755" alt="Screenshot 2026-09-27 at 11 24 21 PM" src="https://github.com/user-attachments/assets/d492cdaf-1984-4341-a2d1-e52316d2bdea" />
+<img width="1414" height="778" alt="Screenshot 2026-09-27 at 11 24 05 PM" src="https://github.com/user-attachments/assets/20dc0236-355b-48b1-a590-0560d791eb54" />
+<img width="1440" height="775" alt="Screenshot 2026-09-27 at 11 23 51 PM" src="https://github.com/user-attachments/assets/b4bad4d4-de5b-4608-8120-bcd5206cccb4" />
+<img width="1439" height="778" alt="Screenshot 2026-09-27 at 11 23 33 PM" src="https://github.com/user-attachments/assets/f7690d41-c01b-4575-be38-4eba60ee66d4" />
+<img width="1440" height="777" alt="Screenshot 2026-09-27 at 11 23 15 PM" src="https://github.com/user-attachments/assets/3499ab6e-b545-4900-ad04-2805e3b055cc" />
+<img width="1438" height="777" alt="Screenshot 2026-09-27 at 11 22 55 PM" src="https://github.com/user-attachments/assets/3ea40a6e-1d32-4f01-a321-aa8ec392dcb0" />
+<img width="1440" height="780" alt="Screenshot 2026-09-27 at 11 22 41 PM" src="https://github.com/user-attachments/assets/eb2422b0-c1fa-4e2c-97c1-9a855446bfbd" />
+
 
 ## 👥 Authors & Contributors
 
