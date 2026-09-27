@@ -57,7 +57,7 @@ const Login = () => {
 
       if (data.success) {
         setAccessToken(data.access_token);
-          
+
         const formattedUser = {
           id: data.user.id,
           email: data.user.email,
@@ -193,9 +193,12 @@ const Login = () => {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Don’t have an account?{" "}
-          <a href="/auth/signup" className="text-[#00e238] font-medium hover:underline">
+          <span
+            onClick={() => navigate('/auth/signup')}
+            className="text-[#00e238] font-medium hover:underline cursor-pointer"
+          >
             Create one
-          </a>
+          </span>
         </p>
       </div>
     </div>

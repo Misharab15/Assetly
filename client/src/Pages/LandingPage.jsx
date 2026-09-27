@@ -98,9 +98,9 @@ export default function LandingPage() {
             <header className="flex items-center justify-between p-4 sticky top-0 z-50 bg-[#0c0c0c]">
                 <img src="/brandlogo.jpg" className="w-50"></img>
                 <nav className="flex gap-4">
-                    <button className="px-4 py-2 mr-2 rounded-md text-white cursor-pointer"
+                    <button className="font-semibold px-4 py-2 mr-2 rounded-md text-white cursor-pointer"
                         onClick={() => navigate("/auth/login")} >Login</button>
-                    <button className="px-4 py-2 mr-4 rounded-md bg-[#181818] text-white font-medium cursor-pointer"
+                    <button className="font-semibold bg-[#00e238] px-4 py-2 mr-4 rounded-md text-black transition-transform duration-150 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2 cursor-pointer"
                         onClick={() => navigate("/auth/signup")} >Get Started</button>
                 </nav>
             </header>
@@ -257,7 +257,7 @@ export default function LandingPage() {
                                 <button
                                     type='submit'
                                     disabled={loading}
-                                    className='bg-[#ababab] text-black font-semibold p-4 pl-6 pr-6 border rounded-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
+                                    className='bg-[#ababab] text-black font-semibold p-4 pl-6 pr-6 border rounded-lg transition-transform duration-150 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2 cursor-pointer'
                                 >
                                     {loading ? (
                                         <div className="flex items-center gap-2">

@@ -170,7 +170,7 @@ const SignUp = () => {
 
         <button
           onClick={handleGoogleSignUp}
-          className="w-full flex items-center justify-center border border-gray-300 rounded-lg py-2.5 hover:bg-gray-100 transition"
+          className="w-full flex items-center justify-center border border-gray-300 rounded-lg py-2.5 hover:bg-gray-100 transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-gray-200"
         >
           <img
             src={GoogleIcon}
