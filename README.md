@@ -10,11 +10,17 @@ The application is designed to give users a clear view of their financial activi
 **DEMO :** https://github.com/sajjalf23/Assetly/blob/main/Assetly-Demo%20(1).mp4
 
 🛠️ 𝗧𝗲𝗰𝗵 𝗦𝘁𝗮𝗰𝗸:
+
 • 𝗙𝗿𝗼𝗻𝘁𝗲𝗻𝗱: React • Vite • React Context API • Axios • React Router
+
 • 𝗕𝗮𝗰𝗸𝗲𝗻𝗱 & 𝗗𝗮𝘁𝗮𝗯𝗮𝘀𝗲: Node.js • Express (REST API) • Supabase (PostgreSQL)
+
 • 𝗔𝘂𝘁𝗵 & 𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆: Google OAuth • JWT (HTTP-only cookies) • Rate Limiting • CORS Protection
+
 • 𝗔𝗣𝗜𝘀 & 𝗗𝗮𝘁𝗮 𝗙𝗲𝗲𝗱𝘀: Binance • KuCoin • Coinbase • Ethereum Wallet • Oanda • Finnhub • Paperinvest.io
+
 • 𝗗𝗲𝘃𝗢𝗽𝘀 & 𝗛𝗼𝘀𝘁𝗶𝗻𝗴: Docker • Docker Compose • Vercel
+
 • 𝗨𝘁𝗶𝗹𝗶𝘁𝗶𝗲𝘀: XLSX / Excel / JSON Export
 
 🌐 𝗟𝗶𝘃𝗲 𝗗𝗲𝗺𝗼: https://assetly-taupe.vercel.app/
