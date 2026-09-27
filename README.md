@@ -9,6 +9,11 @@ The application is designed to give users a clear view of their financial activi
 ---
 **DEMO :** https://github.com/sajjalf23/Assetly/blob/main/Assetly-Demo%20(1).mp4
 
+## 👥 Authors & Contributors
+
+* **Sajjal** — [sajjalf23](https://github.com/sajjalf23)
+* **Misharab Waheed** — [misharab15](https://github.com/misharab15)
+
 🛠️ 𝗧𝗲𝗰𝗵 𝗦𝘁𝗮𝗰𝗸:
 
 • 𝗙𝗿𝗼𝗻𝘁𝗲𝗻𝗱: React • Vite • React Context API • Axios • React Router
@@ -37,11 +42,6 @@ The application is designed to give users a clear view of their financial activi
 <img width="1438" height="777" alt="Screenshot 2026-09-27 at 11 22 55 PM" src="https://github.com/user-attachments/assets/3ea40a6e-1d32-4f01-a321-aa8ec392dcb0" />
 <img width="1440" height="780" alt="Screenshot 2026-09-27 at 11 22 41 PM" src="https://github.com/user-attachments/assets/eb2422b0-c1fa-4e2c-97c1-9a855446bfbd" />
 
-
-## 👥 Authors & Contributors
-
-* **Sajjal** — [sajjalf23](https://github.com/sajjalf23)
-* **Misharab Waheed** — [misharab15](https://github.com/misharab15)
 
 ## ✨ Features
 
