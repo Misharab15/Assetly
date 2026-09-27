@@ -231,21 +231,21 @@ const Transactions = () => {
 
   return (
     <div className="mx-full max-w-6xl px-6">
-      {/* Header */}
-      <div className="flex justify-between items-center pt-12 pb-6">
-        <div className="flex items-center gap-3">
+      {/* Header (Responsive Layout Fix) */}
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pt-12 pb-6">
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className='text-white font-semibold text-xl'>Transactions</h1>
           {cacheInfo && (
-            <div className="flex items-center gap-1 text-xs text-[#ababab] bg-[#181818] px-2 py-1 rounded-md">
+            <div className="flex items-center gap-1 text-xs text-[#ababab] bg-[#181818] px-2 py-1 rounded-md whitespace-nowrap">
               <LuInfo size={12} />
               <span>{cacheInfo}</span>
             </div>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={() => setShowExportModal(true)}
-            className="flex items-center gap-2 bg-[#2285c3] text-white px-3 py-2 rounded-md hover:bg-[#1a6b9c] transition-colors cursor-pointer"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#2285c3] text-white px-3 py-2 rounded-md hover:bg-[#1a6b9c] transition-colors cursor-pointer"
           >
             <LuDownload size={17} />
             <span>Export</span>
@@ -254,7 +254,7 @@ const Transactions = () => {
           <button
             onClick={handleRefresh}
             disabled={refreshing}
-            className='bg-[#181818] p-2 rounded-md hover:bg-[#222] transition-colors'
+            className='shrink-0 bg-[#181818] p-2 rounded-md hover:bg-[#222] transition-colors cursor-pointer'
           >
             <LuRefreshCw
               size={20}
@@ -264,20 +264,20 @@ const Transactions = () => {
         </div>
       </div>
 
-      {/* Filter Toolbar */}
+      {/* Filter Toolbar (Centered on mobile fix) */}
       <div className='flex flex-col sm:flex-row gap-4 items-center justify-between mb-7'>
         <div className='flex items-center gap-3 bg-[#181818] p-2 rounded-md w-full sm:w-1/3'>
-          <LuSearch size={20} className='text-white' />
+          <LuSearch size={20} className='text-white shrink-0' />
           <input
             type='text'
             placeholder='Search by account or asset...'
             value={searchQuery}
             onChange={handleSearch}
-            className='bg-transparent text-white w-full focus:outline-none'
+            className='bg-transparent text-white w-full focus:outline-none min-w-0'
           />
         </div>
 
-        <div className='flex flex-wrap gap-4 w-full sm:w-auto justify-end'>
+        <div className='flex flex-wrap gap-3 w-full sm:w-auto justify-center sm:justify-end'>
           <select
             value={selectedAssetClass}
             onChange={(e) => setSelectedAssetClass(e.target.value)}
@@ -334,7 +334,7 @@ const Transactions = () => {
               setSelectedTypes("");
               setSelectedAssetClass("");
             }}
-            className="text-sm text-[#ababab] hover:text-white transition-colors"
+            className="text-sm text-[#ababab] hover:text-white transition-colors cursor-pointer"
           >
             Clear all filters
           </button>
@@ -346,33 +346,33 @@ const Transactions = () => {
         <TransactionsSkeleton />
       ) : (
         <>
-          {/* Summary Stats */}
+          {/* Summary Stats (Overflow text fix) */}
           {transactions && transactions.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f]">
-                <p className="text-[#ababab] text-sm">Total Transactions</p>
-                <p className="text-white text-2xl font-bold">{transactionPagination.total}</p>
+              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f] min-w-0">
+                <p className="text-[#ababab] text-sm truncate">Total Transactions</p>
+                <p className="text-white text-lg sm:text-2xl font-bold truncate">{transactionPagination.total}</p>
                 {filteredData.length !== transactions.length && (
-                  <p className="text-xs text-[#ababab] mt-1">
+                  <p className="text-xs text-[#ababab] mt-1 truncate">
                     of {transactions.length} total
                   </p>
                 )}
               </div>
-              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f]">
-                <p className="text-[#ababab] text-sm">Filtered Value</p>
-                <p className={`text-2xl font-bold ${filteredTotal >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f] min-w-0">
+                <p className="text-[#ababab] text-sm truncate">Filtered Value</p>
+                <p className={`text-lg sm:text-2xl font-bold truncate ${filteredTotal >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {formatAmount(filteredTotal)}
                 </p>
               </div>
-              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f]">
-                <p className="text-[#ababab] text-sm">Unique Assets</p>
-                <p className="text-white text-2xl font-bold">
+              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f] min-w-0">
+                <p className="text-[#ababab] text-sm truncate">Unique Assets</p>
+                <p className="text-white text-lg sm:text-2xl font-bold truncate">
                   {new Set(filteredData.map(tx => tx.entity)).size}
                 </p>
               </div>
-              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f]">
-                <p className="text-[#ababab] text-sm">Platforms</p>
-                <p className="text-white text-2xl font-bold">
+              <div className="bg-[#181818] p-4 rounded-lg hover:bg-[#1f1f1f] min-w-0">
+                <p className="text-[#ababab] text-sm truncate">Platforms</p>
+                <p className="text-white text-lg sm:text-2xl font-bold truncate">
                   {new Set(filteredData.map(tx => tx.platform)).size}
                 </p>
               </div>
@@ -391,7 +391,7 @@ const Transactions = () => {
                 {transactions.length === 0 && (
                   <button
                     onClick={handleRefresh}
-                    className="mt-4 text-blue-500 hover:text-blue-400 transition-colors"
+                    className="mt-4 text-blue-500 hover:text-blue-400 transition-colors cursor-pointer"
                   >
                     Fetch Transactions
                   </button>
@@ -401,11 +401,11 @@ const Transactions = () => {
               <table className='w-full'>
                 <thead className='text-sm text-[#ababab] bg-[#1f1f1f] sticky top-0'>
                   <tr>
-                    <th className='pl-10 py-2.5 text-left'>Account</th>
-                    <th className='py-2.5 text-right'>Date</th>
-                    <th className='py-2.5 text-right'>Asset</th>
-                    <th className='pr-5 py-2.5 text-right'>Quantity</th>
-                    <th className='pr-5 py-2.5 text-right'>Amount (USD)</th>
+                    <th className='pl-10 py-2.5 text-left whitespace-nowrap'>Account</th>
+                    <th className='py-2.5 text-right whitespace-nowrap'>Date</th>
+                    <th className='py-2.5 text-right whitespace-nowrap'>Asset</th>
+                    <th className='pr-5 py-2.5 text-right whitespace-nowrap'>Quantity</th>
+                    <th className='pr-5 py-2.5 text-right whitespace-nowrap'>Amount (USD)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -414,22 +414,22 @@ const Transactions = () => {
                       <td className='px-4 py-2.5 select-none'>
                         <div className='flex items-center gap-3'>
                           <div
-                            className='rounded-full h-3 w-3'
+                            className='rounded-full h-3 w-3 shrink-0'
                             style={{ background: PLATFORM_COLORS[row.platform] || PLATFORM_COLORS[row.platform?.toLowerCase()] || PLATFORM_COLORS[row.platform?.charAt(0).toUpperCase() + row.platform?.slice(1)] || "#666" }}
                           />
-                          <span className="capitalize">{row.platform}</span>
+                          <span className="capitalize whitespace-nowrap">{row.platform}</span>
                         </div>
                       </td>
-                      <td className='py-2.5 px-4 text-right select-none'>
+                      <td className='py-2.5 px-4 text-right select-none whitespace-nowrap'>
                         {formatDate(row.transaction_date)}
                       </td>
-                      <td className='py-2.5 px-4 text-right select-none font-mono uppercase'>
+                      <td className='py-2.5 px-4 text-right select-none font-mono uppercase whitespace-nowrap'>
                         {row.entity}
                       </td>
-                      <td className="py-2.5 px-4 pr-5 text-right select-none font-mono">
+                      <td className="py-2.5 px-4 pr-5 text-right select-none font-mono whitespace-nowrap">
                         {formatQuantity(row.quantity, row.asset_class)}
                       </td>
-                      <td className={`py-2.5 px-4 pr-5 text-right select-none font-mono ${Number(row.amount) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      <td className={`py-2.5 px-4 pr-5 text-right select-none font-mono whitespace-nowrap ${Number(row.amount) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                         {formatAmount(row.amount)}
                       </td>
                     </tr>
@@ -443,16 +443,16 @@ const Transactions = () => {
 
       {/* Pagination Footer */}
       {!transactionsLoading && transactionPagination.totalPages > 1 && (
-        <div className="flex items-center justify-between px-5 py-4 bg-[#181818] border-t border-[#2a2a2a] rounded-b-2xl mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-between px-5 py-4 bg-[#181818] border-t border-[#2a2a2a] rounded-b-2xl mb-12 gap-4">
           <button
             onClick={() => handlePageChange(transactionPagination.page - 1)}
             disabled={!transactionPagination.hasPreviousPage || transactionsLoading}
-            className="px-4 py-2 rounded-md bg-[#222] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#2a2a2a] cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2 rounded-md bg-[#222] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#2a2a2a] cursor-pointer"
           >
             Previous
           </button>
 
-          <div className="text-sm text-[#ababab]">
+          <div className="text-sm text-[#ababab] text-center">
             Page{" "}
             <span className="text-white font-semibold">
               {transactionPagination.page}
@@ -461,7 +461,7 @@ const Transactions = () => {
             <span className="text-white font-semibold">
               {transactionPagination.totalPages}
             </span>
-            <span className="ml-3">
+            <span className="block sm:inline sm:ml-3 mt-1 sm:mt-0">
               ({transactionPagination.total} transactions)
             </span>
           </div>
@@ -469,7 +469,7 @@ const Transactions = () => {
           <button
             onClick={() => handlePageChange(transactionPagination.page + 1)}
             disabled={!transactionPagination.hasNextPage || transactionsLoading}
-            className="px-4 py-2 rounded-md bg-[#2285c3] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a6b9c] cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2 rounded-md bg-[#2285c3] text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a6b9c] cursor-pointer"
           >
             Next
           </button>

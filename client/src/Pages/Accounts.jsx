@@ -94,8 +94,6 @@ export default function Accounts() {
         coinbase_passphrase: 'Passphrase'
     };
 
-
-
     const apiRequest = async (endpoint, method = 'GET', body = null) => {
         try {
             const response = await API({
@@ -342,33 +340,33 @@ export default function Accounts() {
     return (
         <div className="flex bg-[#0d0d0d] pt-20 pl-5 pr-5 overflow-x-hidden w-full max-w-[100vw] min-h-screen">
             <div className="flex flex-col w-full m-4 gap-4">
-                {/* Header */}
+                {/* Header: Adjusted to stack on mobile and be row on larger screens */}
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 100, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
                     viewport={{ once: false }}
-                    className="flex justify-between items-start"
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
                 >
                     <div>
                         <h1 className="text-2xl text-white font-semibold">Connected Accounts</h1>
                         <p className="text-sm text-[#ababab] mt-1">Manage your exchange connections and account details</p>
                     </div>
 
-                    {/* Dropdown Button */}
-                    <div className="relative dropdown-container">
+                    {/* Dropdown Button: Full width on mobile */}
+                    <div className="relative dropdown-container w-full sm:w-auto">
                         <button
                             onClick={() => setShowDropdown(!showDropdown)}
-                            className="flex items-center gap-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
+                            className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
                         >
                             <FaPlus size={12} />
                             Add Exchange
                             <FaChevronDown size={12} className={`transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
                         </button>
 
-                        {/* Dropdown Menu */}
+                        {/* Dropdown Menu: Full width on mobile */}
                         {showDropdown && (
-                            <div className="absolute right-0 mt-2 w-56 bg-[#181818] border border-[#2a2a2a] rounded-lg shadow-xl z-50">
+                            <div className="absolute right-0 mt-2 w-full sm:w-56 bg-[#181818] border border-[#2a2a2a] rounded-lg shadow-xl z-50">
                                 {exchangeTypes.map(exchange => (
                                     <button
                                         key={exchange.id}

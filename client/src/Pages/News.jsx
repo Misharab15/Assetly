@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { LuSearch, LuExternalLink, LuTrendingUp } from "react-icons/lu";
-import { motion, AnimatePresence } from 'framer-motion';
+import { LuSearch, LuExternalLink, LuTrendingUp, LuArrowUp } from "react-icons/lu";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -32,6 +32,19 @@ export default function News() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Framer Motion hooks for scroll progress
+  const { scrollYProgress, scrollY } = useScroll();
+
+  // Show button only after scrolling down 300px
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setShowScrollTop(latest > 300);
+  });
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -76,7 +89,7 @@ export default function News() {
 
   return (
     <SkeletonTheme baseColor="#181818" highlightColor="#2a2a2a">
-      <div className="flex flex-col w-full bg-[#0d0d0d] pt-10 px-4 md:px-8 gap-6 pb-10">
+      <div className="relative flex flex-col w-full bg-[#0d0d0d] pt-10 px-4 md:px-8 gap-6 pb-10 min-h-screen">
 
         {/* Featured News Banner */}
         {loading ? (
@@ -165,8 +178,8 @@ export default function News() {
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-4 py-2 rounded-full font-medium text-sm cursor-pointer ${selectedCategory === cat
-                  ? "bg-green-400 text-black"
-                  : "bg-[#181818] text-white hover:bg-[#2a2a2a]"
+                    ? "bg-green-400 text-black"
+                    : "bg-[#181818] text-white hover:bg-[#2a2a2a]"
                   } transition`}
               >
                 {cat.toUpperCase()}
@@ -298,6 +311,42 @@ export default function News() {
             </AnimatePresence>
           </motion.div>
         )}
+
+        {/* Scroll To Top Animated Button */}
+        <AnimatePresence>
+          {showScrollTop && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              onClick={scrollToTop}
+              className="fixed bottom-8 right-6 md:right-10 z-50 flex items-center justify-center w-12 h-12 bg-[#181818] rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)] cursor-pointer group"
+              aria-label="Scroll to top"
+            >
+              <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
+                {/* Background Track Circle */}
+                <circle
+                  cx="50" cy="50" r="46"
+                  fill="none"
+                  stroke="#2a2a2a"
+                  strokeWidth="6"
+                />
+                {/* Animated Progress Circle */}
+                <motion.circle
+                  cx="50" cy="50" r="46"
+                  fill="none"
+                  stroke="#4ade80"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  style={{ pathLength: scrollYProgress }}
+                />
+              </svg>
+              {/* Arrow Icon */}
+              <LuArrowUp className="text-[#ababab] group-hover:text-green-400 z-10 transition-colors" size={22} />
+            </motion.button>
+          )}
+        </AnimatePresence>
+
       </div>
     </SkeletonTheme>
   );

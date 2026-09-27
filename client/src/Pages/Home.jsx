@@ -93,13 +93,16 @@ export default function Home() {
                         >
                             <div>
                                 <p className="text-xs font-mono uppercase tracking-widest text-[#ababab]">Estimated Net Worth</p>
-                                <div className="flex items-baseline gap-3 mt-1">
+                                {/* Added flex-wrap and items-center to prevent overflow */}
+                                <div className="flex items-center flex-wrap gap-3 mt-2">
                                     <h2 className="text-4xl font-extrabold text-white">
                                         {homeLoading ? (
                                             <Skeleton width={220} height={40} />
                                         ) : (
+                                            /* Locked strictly to 2 decimal places */
                                             `$${stats?.balances?.total?.toLocaleString(undefined, {
-                                                minimumFractionDigits: 2
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
                                             }) || "0.00"}`
                                         )}
                                     </h2>
@@ -108,7 +111,8 @@ export default function Home() {
                                     ) : (
                                         (stats?.monthlyChange ?? 0) !== 0 && (
                                             <span
-                                                className={`text-xs font-medium px-2 py-0.5 rounded flex items-center gap-1
+                                                /* Added w-fit and whitespace-nowrap to keep pill intact */
+                                                className={`text-xs font-medium px-2 py-0.5 rounded flex items-center gap-1 w-fit whitespace-nowrap
                                                 ${(stats?.monthlyChange ?? 0) > 0
                                                         ? "text-green-400 bg-green-500/10"
                                                         : "text-red-400 bg-red-500/10"
@@ -197,9 +201,9 @@ export default function Home() {
                             <div className="p-3 bg-green-500/10 text-green-400 rounded-xl">
                                 <LuShieldCheck size={24} />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full min-w-0">
                                 <p className="text-xs text-[#ababab] font-medium">API Core Status</p>
-                                <h4 className="text-sm font-semibold text-white mt-0.5">
+                                <h4 className="text-sm font-semibold text-white mt-0.5 truncate">
                                     {homeLoading ? (
                                         <Skeleton width={140} height={16} />
                                     ) : stats?.integrations?.allActive ? (
@@ -216,9 +220,9 @@ export default function Home() {
                             <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
                                 <LuWallet size={24} />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full min-w-0">
                                 <p className="text-xs text-[#ababab] font-medium">Connected Modules</p>
-                                <h4 className="text-sm font-semibold text-white mt-0.5">
+                                <h4 className="text-sm font-semibold text-white mt-0.5 truncate">
                                     {homeLoading ? (
                                         <Skeleton width={120} height={16} />
                                     ) : (
@@ -233,9 +237,9 @@ export default function Home() {
                             <div className="p-3 bg-purple-500/10 text-purple-400 rounded-xl">
                                 <LuTrendingUp size={24} />
                             </div>
-                            <div className="w-full">
+                            <div className="w-full min-w-0">
                                 <p className="text-xs text-[#ababab] font-medium">Top Performer</p>
-                                <h4 className="text-sm font-semibold text-white mt-0.5">
+                                <h4 className="text-sm font-semibold text-white mt-0.5 truncate">
                                     {homeLoading ? (
                                         <Skeleton width={160} height={16} />
                                     ) : stats?.top_performer_24h ? (

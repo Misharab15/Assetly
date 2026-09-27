@@ -11,12 +11,12 @@ import API from '../Api/axios';
 
 // Skeleton Loading Components
 const MarketOverviewSkeleton = () => (
-  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
     {[...Array(4)].map((_, i) => (
-      <div key={i} className="bg-[#202020] p-4 rounded-xl border border-[#2a2a2a] animate-pulse flex flex-col gap-2">
-        <div className="h-3 bg-[#2a2a2a] rounded w-20"></div>
-        <div className="h-6 bg-[#2a2a2a] rounded w-28"></div>
-        <div className="h-4 bg-[#2a2a2a] rounded w-16"></div>
+      <div key={i} className="bg-[#202020] p-3 sm:p-4 rounded-xl border border-[#2a2a2a] animate-pulse flex flex-col gap-2">
+        <div className="h-3 bg-[#2a2a2a] rounded w-16 sm:w-20"></div>
+        <div className="h-5 sm:h-6 bg-[#2a2a2a] rounded w-20 sm:w-28"></div>
+        <div className="h-4 bg-[#2a2a2a] rounded w-12 sm:w-16"></div>
       </div>
     ))}
   </div>
@@ -71,7 +71,7 @@ const CustomToolTip = ({ active, payload, total }) => {
       <div className='bg-[#3a3a3a] p-2 rounded-lg shadow-lg'>
         <p className='font-semibold text-white'>{crypto.name}</p>
         <p className='text-white font-medium'>
-          ${crypto.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+          ${crypto.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </p>
         <p className='text-sm text-gray-300'>
           {total ? ((crypto.value / total) * 100).toFixed(2) : 0}% of portfolio
@@ -216,39 +216,40 @@ export default function CryptoDashboard() {
 
   return (
     <div className='flex flex-col'>
-      <div className='min-h-screen bg-[#0d0d0d] text-white flex flex-col p-6 gap-8 pt-10'>
+      <div className='min-h-screen bg-[#0d0d0d] text-white flex flex-col p-4 sm:p-6 gap-6 sm:gap-8 pt-10'>
         {/* Market Overview Card */}
-        <div className='bg-[#181818] p-6 rounded-2xl shadow-lg border border-[#262626] transition-colors duration-200 hover:border-gray-700 min-h-[148px] flex flex-col justify-between w-full'>
+        <div className='bg-[#181818] p-4 sm:p-6 rounded-2xl shadow-lg border border-[#262626] transition-colors duration-200 hover:border-gray-700 min-h-[148px] flex flex-col justify-between w-full'>
           <h2 className='text-lg font-bold text-white tracking-wide'>Market Overview</h2>
           {isMarketDataLoading ? (
             <MarketOverviewSkeleton />
           ) : chartData.length === 0 ? (
             <div className="text-center text-gray-400 py-6">No market data available</div>
           ) : (
-            <div className='grid grid-cols-2 sm:grid-cols-4 gap-4 text-gray-300 pt-2'>
+            <div className='grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-gray-300 pt-3'>
               {chartData.map((c, i) => (
-                <div key={i} className='bg-[#202020] p-4 rounded-xl border border-[#2a2a2a] flex flex-col justify-between gap-1'>
-                  <p className='pl-2 text-xs uppercase font-semibold text-gray-400 tracking-wider'>{c.name}</p>
-                  <p className='pl-2 text-xl font-bold text-white'>
+                <div key={i} className='bg-[#202020] p-3 sm:p-4 rounded-xl border border-[#2a2a2a] flex flex-col justify-between gap-1.5 overflow-hidden'>
+                  <p className='text-[10px] sm:text-xs uppercase font-semibold text-gray-400 tracking-wider truncate'>
+                    {c.name}
+                  </p>
+                  <p className='text-base sm:text-xl font-bold text-white truncate'>
                     ${c.price < 1 ? c.price.toFixed(6) : c.price.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: c.price < 1 ? 6 : 2
                     })}
                   </p>
                   <div
-                    className={`ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium w-max ${c.change24h > 0
-                      ? 'bg-green-900/30 text-green-400'
-                      : c.change24h < 0
-                        ? 'bg-red-900/30 text-red-400'
-                        : 'bg-gray-900/30 text-gray-400'
+                    className={`inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-medium w-max ${c.change24h > 0
+                        ? 'bg-green-900/30 text-green-400'
+                        : c.change24h < 0
+                          ? 'bg-red-900/30 text-red-400'
+                          : 'bg-gray-900/30 text-gray-400'
                       }`}
                   >
                     {c.change24h > 0 ? (
-                      <LuTrendingUp size={14} />
+                      <LuTrendingUp size={12} className="sm:w-3.5 sm:h-3.5" />
                     ) : c.change24h < 0 ? (
-                      <LuTrendingDown size={14} />
+                      <LuTrendingDown size={12} className="sm:w-3.5 sm:h-3.5" />
                     ) : null}
-
                     {formatChange(c.change24h)}
                   </div>
                 </div>
@@ -258,11 +259,11 @@ export default function CryptoDashboard() {
         </div>
 
         {/* Two columns: trend & portfolio */}
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8'>
           {/* Crypto Trend */}
-          <div className='bg-[#181818] p-6 rounded-2xl shadow-lg border border-[#262626]'>
-            <h2 className='text-xl font-semibold mb-4 text-white'>Crypto Asset Trend</h2>
-            <div className='w-full h-[280px]'>
+          <div className='bg-[#181818] p-4 sm:p-6 rounded-2xl shadow-lg border border-[#262626]'>
+            <h2 className='text-lg sm:text-xl font-semibold mb-4 text-white'>Crypto Asset Trend</h2>
+            <div className='w-full h-[250px] sm:h-[280px]'>
               {isMarketDataLoading ? (
                 <ChartSkeleton />
               ) : snapshotData.length === 0 ? (
@@ -271,16 +272,16 @@ export default function CryptoDashboard() {
                 </div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={snapshotData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <XAxis dataKey="month" stroke="#aaa" interval={0} tick={{ fontSize: 12 }} padding={{ left: 20, right: 20 }} />
-                    <YAxis stroke="#aaa" tick={{ fontSize: 12 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <LineChart data={snapshotData} margin={{ top: 20, right: 10, left: 0, bottom: 5 }}>
+                    <XAxis dataKey="month" stroke="#aaa" interval={0} tick={{ fontSize: 10, sm: 12 }} padding={{ left: 10, right: 10 }} />
+                    <YAxis stroke="#aaa" tick={{ fontSize: 10, sm: 12 }} width={45} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                     <Tooltip content={<CustomToolTipLine />} />
                     <Line
                       type="monotone"
                       dataKey="value"
                       stroke="#2285c3"
                       strokeWidth={3}
-                      dot={{ r: 4, strokeWidth: 2, fill: "#fff" }}
+                      dot={{ r: 3, strokeWidth: 2, fill: "#fff" }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -289,9 +290,9 @@ export default function CryptoDashboard() {
           </div>
 
           {/* Portfolio Distribution */}
-          <div className='bg-[#181818] p-6 rounded-2xl shadow-lg border border-[#262626] flex flex-col'>
-            <h2 className='text-xl font-semibold mb-4 text-white'>Portfolio Distribution</h2>
-            <div className='relative w-full h-[280px]'>
+          <div className='bg-[#181818] p-4 sm:p-6 rounded-2xl shadow-lg border border-[#262626] flex flex-col'>
+            <h2 className='text-lg sm:text-xl font-semibold mb-4 text-white'>Portfolio Distribution</h2>
+            <div className='relative w-full h-[250px] sm:h-[280px]'>
               {!isLoggedIn ? (
                 <div className='flex flex-col justify-center items-center h-full text-gray-400'>
                   <p className='mb-2'>Please log in to view your portfolio</p>
@@ -305,13 +306,13 @@ export default function CryptoDashboard() {
                 </div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart margin={{ top: 20, bottom: 20 }}>
+                  <PieChart margin={{ top: 10, bottom: 10 }}>
                     <Pie
                       data={displayData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={80}
-                      outerRadius={120}
+                      innerRadius={70}
+                      outerRadius={100}
                       dataKey="value"
                       label={({ percent, symbol }) =>
                         percent > 0.05 ? symbol : ""
@@ -328,11 +329,11 @@ export default function CryptoDashboard() {
                 </ResponsiveContainer>
               )}
               {snapshotData.length > 0 && !isPortfolioLoading && (
-                <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center'>
-                  <div className='text-white text-2xl font-semibold'>
-                    ${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-32 px-2'>
+                  <div className='text-white text-lg sm:text-2xl font-semibold truncate'>
+                    ${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
-                  <div className='text-sm text-gray-400 mt-1'>Total Value</div>
+                  <div className='text-xs sm:text-sm text-gray-400 mt-1 truncate'>Total Value</div>
                 </div>
               )}
             </div>
@@ -342,33 +343,33 @@ export default function CryptoDashboard() {
         {/* Portfolio Table */}
         {isLoggedIn && (
           <div className="w-full">
-            <div className='flex items-center justify-between mb-3'>
-              <h1 className='text-white font-semibold text-xl'>Your Assets</h1>
+            <div className='flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-3'>
+              <h1 className='text-white font-semibold text-lg sm:text-xl'>Your Assets</h1>
               <div className='flex items-center gap-3 bg-[#181818] p-2 rounded-md w-full sm:w-1/4 border border-[#262626]'>
-                <LuSearch size={20} className='text-white' />
+                <LuSearch size={18} className='text-white' />
                 <input
                   type='text'
                   placeholder='Search Assets'
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   spellCheck={false}
-                  className='bg-transparent text-white w-full focus:outline-none placeholder-gray-400'
+                  className='bg-transparent text-white text-sm w-full focus:outline-none placeholder-gray-400'
                 />
               </div>
             </div>
 
-            <div className='rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] mt-6 mb-12 overflow-x-auto'>
+            <div className='rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] mt-4 mb-12 overflow-x-auto'>
               {isPortfolioLoading ? (
                 <TableSkeleton />
               ) : displayData.length === 0 ? (
-                <div className="text-center py-8 text-gray-400">
+                <div className="text-center py-8 text-gray-400 text-sm">
                   No assets found. Add crypto assets to your portfolio.
                 </div>
               ) : (
-                <table className='w-full'>
-                  <thead className='text-sm font-medium text-[#ababab] bg-[#1f1f1f]'>
+                <table className='w-full min-w-[700px]'>
+                  <thead className='text-xs sm:text-sm font-medium text-[#ababab] bg-[#1f1f1f]'>
                     <tr>
-                      <th className='pl-10 py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none'>Asset</th>
+                      <th className='pl-6 py-2.5 px-4 text-left font-mono uppercase tracking-wide select-none'>Asset</th>
                       <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>Amount</th>
                       <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>Price</th>
                       <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>24h Change</th>
@@ -378,10 +379,10 @@ export default function CryptoDashboard() {
                   </thead>
                   <tbody>
                     {displayData.map((row) => (
-                      <tr key={row.symbol} className='text-sm text-white border-b border-[#2a2a2a] last:border-b-0 hover:bg-[#202020]'>
-                        <td className='py-2.5 px-4 select-none flex items-center gap-3'>
-                          <div className='rounded-full h-3 w-3' style={{ background: getAssetColor(row.symbol) }}></div>
-                          {row.symbol}
+                      <tr key={row.symbol} className='text-xs sm:text-sm text-white border-b border-[#2a2a2a] last:border-b-0 hover:bg-[#202020]'>
+                        <td className='py-2.5 pl-6 px-4 select-none flex items-center gap-3'>
+                          <div className='rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 flex-shrink-0' style={{ background: getAssetColor(row.symbol) }}></div>
+                          <span className="truncate">{row.symbol}</span>
                         </td>
                         <td className='py-3 px-4 text-right select-none'>
                           {row.amount.toLocaleString(undefined, { maximumFractionDigits: 6 })}

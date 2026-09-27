@@ -258,11 +258,8 @@ export default function Earnings() {
 
     return (
         <div className="flex bg-[#0d0d0d] pt-10 overflow-x-hidden w-full max-w-[100vw]">
-            {/* navbar
-            <div className="w-[240px] h-screen bg-yellow-400 mr-6"></div> */}
-
-            {/* Main content */}
-            <div className="flex flex-col w-full m-4 gap-4">
+            {/* Main content - Replaced margin (m-4) with padding (p-4) to fix width overflow */}
+            <div className="flex flex-col w-full p-4 sm:p-6 gap-4 box-border">
                 {/* {card container} */}
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
@@ -319,7 +316,6 @@ export default function Earnings() {
                             />
                             <YAxis
                                 stroke="#999"
-                                //padding={{ top: -5 }}
                                 tick={{ fill: "white", fontSize: 12, dx: -4, fontWeight: 500 }}
                                 axisLine={false}
                                 tickLine={false}
@@ -364,28 +360,29 @@ export default function Earnings() {
                 {/* Table Section */}
                 <div className='rounded-2xl overflow-hidden bg-[#181818] relative z-[9999] mt-6 overflow-x-auto'>
                     <table className='w-full'>
+                        {/* Added whitespace-nowrap to all th elements */}
                         <thead className='text-sm font-medium text-[#ababab] bg-[#1f1f1f]'>
                             <tr>
-                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>Source</th>
-                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>
+                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none whitespace-nowrap'>Source</th>
+                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none whitespace-nowrap'>
                                     <div className='flex justify-end items-center gap-1.5'>
                                         <div>Total Source Volume</div>
                                         <FaInfoCircle size={12} onMouseOver={(e) => handleMouseOver(e, "Total volume of this source over all exchanges.")} onMouseLeave={handleMouseLeave} className='cursor-pointer' />
                                     </div>
                                 </th>
-                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>
+                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none whitespace-nowrap'>
                                     <div className='flex justify-end items-center gap-1.5'>
                                         <div>% Of Total Volume</div>
                                         <FaInfoCircle size={12} onMouseOver={(e) => handleMouseOver(e, "Percentage volume of this source with respect to other classes.")} onMouseLeave={handleMouseLeave} className='cursor-pointer' />
                                     </div>
                                 </th>
-                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>
+                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none whitespace-nowrap'>
                                     <div className='flex justify-end items-center gap-1.5'>
                                         <div>Avg. Monthly Growth</div>
                                         <FaInfoCircle size={12} onMouseOver={(e) => handleMouseOver(e, "Average increase or decrease in earnings per month.")} onMouseLeave={handleMouseLeave} className='cursor-pointer' />
                                     </div>
                                 </th>
-                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none'>
+                                <th className='py-2.5 px-4 text-right font-mono uppercase tracking-wide select-none whitespace-nowrap'>
                                     <div className='flex justify-end items-center gap-1.5'>
                                         <div>Avg. Yearly Growth</div>
                                         <FaInfoCircle size={12} onMouseOver={(e) => handleMouseOver(e, "Average increase or decrease in earnings per year.")} onMouseLeave={handleMouseLeave} className='cursor-pointer' />
@@ -396,34 +393,36 @@ export default function Earnings() {
                         <tbody>
                             {tableData.map((row, index) => (
                                 <tr key={index} className='text-sm text-white border-b border-[#2a2a2a] last:border-b-0 hover:bg-[#202020]'>
-                                    <td className='py-2.5 px-4 select-none'>
+                                    {/* Added whitespace-nowrap to td elements to prevent splitting */}
+                                    <td className='py-2.5 px-4 select-none whitespace-nowrap'>
                                         <div className='flex items-center gap-3'>
                                             <div className='rounded-full h-3 w-3' style={{ background: row.color }}></div>
                                             <span>{row.source}</span>
                                         </div>
                                     </td>
-                                    <td className='py-3 px-4 text-right select-none'>
-                                        {row.totalVolume}
+                                    <td className='py-3 px-4 text-right select-none whitespace-nowrap'>
+                                        ${row.totalVolume}
                                     </td>
-                                    <td className='py-3 px-4 text-right select-none'>
+                                    <td className='py-3 px-4 text-right select-none whitespace-nowrap'>
                                         {row.percentVolume}%
                                     </td>
-                                    <td className='py-3 px-4 text-right select-none'>
+                                    <td className='py-3 px-4 text-right select-none whitespace-nowrap'>
                                         <div className='flex items-center justify-end gap-2'>
-                                            <span>{row.avgMonthly} $</span>
-                                            <span className={`px-1.5 py-0.5 rounded-md text-xs ${Number(row.monthlyChange) >= 0
-                                                ? 'bg-green-500/20 text-green-400'
-                                                : 'bg-red-500/20 text-red-400'
-                                                }`}>{Number(row.monthlyChange) >= 0 ? '▲' : '▼'} {row.monthlyChange}% </span>
+                                            <span>${row.avgMonthly}</span>
+                                            {/* Made percentage badges flex containers to keep icon and text bound together */}
+                                            <span className={`flex items-center gap-1 whitespace-nowrap px-1.5 py-0.5 rounded-md text-xs ${Number(row.monthlyChange) >= 0
+                                                    ? 'bg-green-500/20 text-green-400'
+                                                    : 'bg-red-500/20 text-red-400'
+                                                }`}>{Number(row.monthlyChange) >= 0 ? '▲' : '▼'} {row.monthlyChange}%</span>
                                         </div>
                                     </td>
-                                    <td className='py-3 px-4 text-right select-none'>
+                                    <td className='py-3 px-4 text-right select-none whitespace-nowrap'>
                                         <div className='flex items-center justify-end gap-2'>
-                                            <span>{row.avgYearly} $</span>
-                                            <span className={`px-1.5 py-0.5 rounded-md text-xs ${Number(row.yearlyChange) >= 0
-                                                ? 'bg-green-500/20 text-green-400'
-                                                : 'bg-red-500/20 text-red-400'
-                                                }`}>{Number(row.yearlyChange) >= 0 ? '▲' : '▼'} {row.yearlyChange}% </span>
+                                            <span>${row.avgYearly}</span>
+                                            <span className={`flex items-center gap-1 whitespace-nowrap px-1.5 py-0.5 rounded-md text-xs ${Number(row.yearlyChange) >= 0
+                                                    ? 'bg-green-500/20 text-green-400'
+                                                    : 'bg-red-500/20 text-red-400'
+                                                }`}>{Number(row.yearlyChange) >= 0 ? '▲' : '▼'} {row.yearlyChange}%</span>
                                         </div>
                                     </td>
                                 </tr>
