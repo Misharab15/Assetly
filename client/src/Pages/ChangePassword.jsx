@@ -44,18 +44,11 @@ const ChangePassword = () => {
 
     try {
       // Send request to your backend with the recovery token
-      const { data } = await API.post(
-        "/api/auth/update-forgotten-password",
-        {
-          newPassword: password,
-          confirmPassword: confirmPassword
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      );
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'recovery',
+      })
 
       toast.success(data.message || "Password reset successfully!");
       setTimeout(() => navigate("/login"), 2000);
