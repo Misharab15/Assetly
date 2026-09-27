@@ -17,6 +17,28 @@ const REFRESH_COOKIE_OPTS = {
     path: '/', // Makes the cookie available across your entire API domain
     maxAge: 7 * 24 * 60 * 60 * 1000,
 };
+
+const trimTrailingSlash = (value = '') =>
+    value.replace(/\/+$/, '');
+
+const getServerOrigin = (req) => {
+    if (process.env.BACKEND_URL) {
+        return trimTrailingSlash(process.env.BACKEND_URL);
+    }
+
+    const forwardedProto = req.get('x-forwarded-proto');
+    const proto = forwardedProto
+        ? forwardedProto.split(',')[0]
+        : req.protocol;
+    const host = req.get('x-forwarded-host') || req.get('host');
+
+    if (!host) return '';
+
+    return `${proto}://${host}`;
+};
+
+const getClientOrigin = () =>
+    trimTrailingSlash(process.env.CLIENT_ORIGIN || '');
 // =========================================================
 // SIGNUP / REGISTER
 // =========================================================
@@ -172,11 +194,20 @@ export const refresh = async (req, res) => {
 // 1. Update your existing googleLogin controller
 export const googleLogin = async (req, res) => {
     try {
+        const serverOrigin = getServerOrigin(req);
+
+        if (!serverOrigin) {
+            return res.status(500).json({
+                success: false,
+                message: 'Server origin is not configured for OAuth',
+            });
+        }
+
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                // Send Google straight to your frontend React router
-                redirectTo: process.env.CLIENT_ORIGIN + '/auth/callback',
+                // Google/Supabase returns the code here for server-side exchange
+                redirectTo: `${serverOrigin}/api/auth/callback`,
             },
         });
 
@@ -217,11 +248,13 @@ export const setAuthCookie = (req, res) => {
 // =========================================================
 export const callback = async (req, res) => {
     const { code } = req.query;
+    const clientOrigin = getClientOrigin();
+    const loginPath = '/auth/login?error=oauth_failed';
 
     if (!code) {
-        return res.redirect(
-            `${process.env.CLIENT_ORIGIN}/login?error=oauth_failed`
-        );
+        return res.redirect(clientOrigin
+            ? `${clientOrigin}${loginPath}`
+            : loginPath);
     }
 
     try {
@@ -229,9 +262,9 @@ export const callback = async (req, res) => {
             await supabase.auth.exchangeCodeForSession(code);
 
         if (error || !data.session) {
-            return res.redirect(
-                `${process.env.CLIENT_ORIGIN}/login?error=oauth_failed`
-            );
+            return res.redirect(clientOrigin
+                ? `${clientOrigin}${loginPath}`
+                : loginPath);
         }
 
         // Store refresh token securely
@@ -242,15 +275,15 @@ export const callback = async (req, res) => {
         );
 
         // Do NOT put access token in URL
-        return res.redirect(
-            `${process.env.CLIENT_ORIGIN}/auth/callback?login=success`
-        );
+        return res.redirect(clientOrigin
+            ? `${clientOrigin}/auth/callback?login=success`
+            : '/auth/callback?login=success');
     } catch (err) {
         console.error('Google callback error:', err);
 
-        return res.redirect(
-            `${process.env.CLIENT_ORIGIN}/login?error=oauth_failed`
-        );
+        return res.redirect(clientOrigin
+            ? `${clientOrigin}${loginPath}`
+            : loginPath);
     }
 };
 

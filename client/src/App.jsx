@@ -47,6 +47,7 @@ const AppContent = () => {
     '/auth/login',
     '/auth/signup',
     '/auth/forgot-password',
+    '/callback',
     '/auth/callback',
     '/auth/change-password',
   ];
@@ -95,6 +96,11 @@ const AppContent = () => {
 
           <Route
             path="/auth/callback"
+            element={<AuthCallback />}
+          />
+
+          <Route
+            path="/callback"
             element={<AuthCallback />}
           />
 
