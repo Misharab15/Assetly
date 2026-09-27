@@ -242,10 +242,6 @@ export const logout = async (req, res) => {
     try {
         const refresh_token = req.cookies?.refresh_token;
 
-        /*
-         * Do not let failure to revoke the Supabase session
-         * prevent the cookie from being removed.
-         */
         if (refresh_token) {
             try {
                 await supabase.auth.admin.signOut(refresh_token);
@@ -281,12 +277,6 @@ export const logout = async (req, res) => {
 // =========================================================
 export const changePassword = async (req, res) => {
     try {
-        /*
-         * authenticateUser middleware must run before this controller.
-         *
-         * It sets:
-         * req.user = authenticated Supabase user
-         */
         if (!req.user) {
             return res.status(401).json({
                 success: false,
@@ -303,7 +293,6 @@ export const changePassword = async (req, res) => {
             confirmPassword,
         } = req.body;
 
-        // Validate fields
         if (
             !currentPassword ||
             !newPassword ||
@@ -315,7 +304,6 @@ export const changePassword = async (req, res) => {
             });
         }
 
-        // Confirm new password
         if (newPassword !== confirmPassword) {
             return res.status(400).json({
                 success: false,
@@ -323,7 +311,6 @@ export const changePassword = async (req, res) => {
             });
         }
 
-        // Password length
         if (newPassword.length < 6) {
             return res.status(400).json({
                 success: false,
@@ -331,7 +318,6 @@ export const changePassword = async (req, res) => {
             });
         }
 
-        // Prevent same password
         if (currentPassword === newPassword) {
             return res.status(400).json({
                 success: false,
@@ -340,12 +326,6 @@ export const changePassword = async (req, res) => {
             });
         }
 
-        /*
-         * Verify current password.
-         *
-         * This checks that the user actually knows
-         * their existing password.
-         */
         const { error: signInError } =
             await supabase.auth.signInWithPassword({
                 email,
@@ -359,13 +339,6 @@ export const changePassword = async (req, res) => {
             });
         }
 
-        /*
-         * Update password using the Supabase Admin API.
-         *
-         * IMPORTANT:
-         * supabaseClient.js must use the SERVICE_ROLE key
-         * on the backend for this to work.
-         */
         const { error: updateError } =
             await supabase.auth.admin.updateUserById(
                 userId,
@@ -421,81 +394,112 @@ export const resetpassword = async (req, res) => {
         }
 
         const { data, error } =
-            await supabase.auth.resetPasswordForEmail(
-                email,
-                {
-                    redirectTo:
-                        process.env.CLIENT_ORIGIN +
-                        '/auth/change-password',
-                }
-            );
+            await supabase.auth.resetPasswordForEmail(email);
 
         if (error) {
-            console.error(
-                'Reset password error:',
-                error
-            );
+            console.error('Reset password error:', error);
 
             return res.status(400).json({
                 success: false,
-                message:
-                    error.message ||
-                    'Failed to send reset email',
+                message: error.message || 'Failed to send reset email',
             });
         }
 
         return res.status(200).json({
             success: true,
-            message:
-                'Password reset email sent! Please check your inbox.',
+            message: 'Password reset email sent! Please check your inbox.',
             data,
         });
     } catch (err) {
-        console.error(
-            'Reset password error:',
-            err
-        );
+        console.error('Reset password error:', err);
 
         return res.status(500).json({
             success: false,
-            message:
-                err.message ||
-                'Failed to process request',
+            message: err.message || 'Failed to process request',
         });
     }
 };
 
 // =========================================================
-// UPDATE PASSWORD AFTER FORGOT PASSWORD FLOW
+// VERIFY OTP AND RESET PASSWORD (NEW)
 // =========================================================
-export const updateForgottenPassword = async (
-    req,
-    res
-) => {
+export const verifyAndResetPassword = async (req, res) => {
     try {
-        const {
-            newPassword,
-            confirmPassword,
-        } = req.body;
+        const { email, token, newPassword } = req.body;
 
-        // Get access token
-        const authHeader =
-            req.headers.authorization;
+        if (!email || !token || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Email, 6-digit code, and new password are required",
+            });
+        }
 
-        if (
-            !authHeader ||
-            !authHeader.startsWith('Bearer ')
-        ) {
+        if (newPassword.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Password must be at least 6 characters",
+            });
+        }
+
+        // Verify the 6-digit code sent via email
+        const { data, error: otpError } = await supabase.auth.verifyOtp({
+            email,
+            token,
+            type: 'recovery',
+        });
+
+        if (otpError || !data.user) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired code. Please check and try again.",
+            });
+        }
+
+        // Update user password via Admin API
+        const { error: updateError } = await supabase.auth.admin.updateUserById(
+            data.user.id,
+            { password: newPassword }
+        );
+
+        if (updateError) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to update password. Please try again.",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Password reset successfully! Please log in.",
+        });
+
+    } catch (err) {
+        console.error("Verify OTP error:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message || "Failed to process request",
+        });
+    }
+};
+
+// =========================================================
+// UPDATE PASSWORD AFTER FORGOT PASSWORD FLOW (Legacy Token-based)
+// =========================================================
+export const updateForgottenPassword = async (req, res) => {
+    try {
+        const { newPassword, confirmPassword } = req.body;
+
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({
                 success: false,
                 message: 'No recovery session found',
             });
         }
 
-        const accessToken =
-            authHeader.split(' ')[1];
+        const accessToken = authHeader.split(' ')[1];
 
-        // Validate fields
         if (!newPassword || !confirmPassword) {
             return res.status(400).json({
                 success: false,
@@ -503,7 +507,6 @@ export const updateForgottenPassword = async (
             });
         }
 
-        // Confirm passwords
         if (newPassword !== confirmPassword) {
             return res.status(400).json({
                 success: false,
@@ -511,32 +514,25 @@ export const updateForgottenPassword = async (
             });
         }
 
-        // Minimum password length
         if (newPassword.length < 6) {
             return res.status(400).json({
                 success: false,
-                message:
-                    'Password must be at least 6 characters',
+                message: 'Password must be at least 6 characters',
             });
         }
 
-        // Get user from recovery access token
         const {
             data: { user },
             error: userError,
-        } = await supabase.auth.getUser(
-            accessToken
-        );
+        } = await supabase.auth.getUser(accessToken);
 
         if (userError || !user) {
             return res.status(401).json({
                 success: false,
-                message:
-                    'Invalid or expired recovery session. Please request a new password reset.',
+                message: 'Invalid or expired recovery session. Please request a new password reset.',
             });
         }
 
-        // Update password
         const { error: updateError } =
             await supabase.auth.admin.updateUserById(
                 user.id,
@@ -546,34 +542,22 @@ export const updateForgottenPassword = async (
             );
 
         if (updateError) {
-            console.error(
-                'Password update error:',
-                updateError
-            );
-
             return res.status(500).json({
                 success: false,
-                message:
-                    'Failed to update password. Please try again.',
+                message: 'Failed to update password. Please try again.',
             });
         }
 
         return res.status(200).json({
             success: true,
-            message:
-                'Password reset successfully! Please log in with your new password.',
+            message: 'Password reset successfully! Please log in with your new password.',
         });
     } catch (err) {
-        console.error(
-            'Update forgotten password error:',
-            err
-        );
+        console.error('Update forgotten password error:', err);
 
         return res.status(500).json({
             success: false,
-            message:
-                err.message ||
-                'Failed to reset password',
+            message: err.message || 'Failed to reset password',
         });
     }
 };
@@ -590,57 +574,33 @@ export const getUser = async (req, res) => {
             });
         }
 
-        let username =
-            req.user.user_metadata?.username;
+        let username = req.user.user_metadata?.username;
 
-        /*
-         * If username does not exist, generate one
-         * from the user's full name.
-         */
         if (!username && req.user.email) {
-            const fullName =
-                req.user.user_metadata?.full_name || '';
+            const fullName = req.user.user_metadata?.full_name || '';
 
             const firstName =
                 fullName.split(' ')[0]?.toLowerCase() ||
-                req.user.email
-                    .split('@')[0]
-                    .toLowerCase();
+                req.user.email.split('@')[0].toLowerCase();
 
             username = firstName;
 
-            /*
-             * Check if username already exists.
-             */
-            const {
-                data,
-                error,
-            } =
-                await supabase.auth.admin.listUsers();
+            const { data, error } = await supabase.auth.admin.listUsers();
 
             if (error) {
                 throw error;
             }
 
-            const usernameExists =
-                data.users.some(
-                    (user) =>
-                        user.user_metadata
-                            ?.username === username
-                );
+            const usernameExists = data.users.some(
+                (user) => user.user_metadata?.username === username
+            );
 
             if (usernameExists) {
                 username =
                     firstName +
-                    Math.floor(
-                        1000 +
-                        Math.random() * 9000
-                    );
+                    Math.floor(1000 + Math.random() * 9000);
             }
 
-            /*
-             * Save generated username.
-             */
             await supabase.auth.admin.updateUserById(
                 req.user.id,
                 {
@@ -663,10 +623,7 @@ export const getUser = async (req, res) => {
             user: flatUser,
         });
     } catch (err) {
-        console.error(
-            'Get user error:',
-            err
-        );
+        console.error('Get user error:', err);
 
         return res.status(500).json({
             success: false,

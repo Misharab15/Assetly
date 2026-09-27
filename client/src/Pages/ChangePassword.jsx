@@ -1,35 +1,21 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../Api/axios";
 
 const ChangePassword = () => {
+  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [accessToken, setAccessToken] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // Extract access token from URL hash (Supabase recovery flow)
-    const hash = window.location.hash;
-    const params = new URLSearchParams(hash.replace("#", ""));
-    const token = params.get("access_token");
-
-    if (token) {
-      setAccessToken(token);
-    } else {
-      toast.error("Invalid or expired recovery link. Please request a new password reset.");
-      setTimeout(() => navigate("/forgot-password"), 3000);
-    }
-  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!accessToken) {
-      return toast.error("Invalid recovery session. Please request a new password reset.");
+    if (!email || !token || !password || !confirmPassword) {
+      return toast.error("All fields are required.");
     }
 
     if (password !== confirmPassword) {
@@ -43,15 +29,16 @@ const ChangePassword = () => {
     setLoading(true);
 
     try {
-      // Send request to your backend with the recovery token
-      const { data, error } = await supabase.auth.verifyOtp({
+      // 1. Verify the OTP code with Supabase via your backend (or directly)
+      // 2. Update the password
+      const { data } = await API.post("/api/auth/verify-and-reset", {
         email,
         token,
-        type: 'recovery',
-      })
+        newPassword: password,
+      });
 
       toast.success(data.message || "Password reset successfully!");
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/auth/login"), 2000);
 
     } catch (error) {
       console.error("Password reset error:", error);
@@ -62,43 +49,60 @@ const ChangePassword = () => {
   };
 
   return (
-    accessToken && (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-8 rounded-lg shadow-md w-[380px]"
+    <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-lg shadow-md w-[380px]"
+      >
+        <h2 className="text-green-500 text-2xl mb-4 text-center font-bold">Reset Password</h2>
+
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+
+        <input
+          type="text"
+          placeholder="Enter 6-digit Code (e.g. 958576)"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+          required
+          maxLength={6}
+          className="w-full p-2 mb-4 border rounded tracking-widest text-center font-bold text-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+
+        <input
+          type="password"
+          placeholder="New Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={6}
+          className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+
+        <input
+          type="password"
+          placeholder="Confirm New Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <h2 className="text-green-500 text-2xl mb-4 text-center">Reset Password</h2>
-
-          <input
-            type="password"
-            placeholder="New Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-
-          <input
-            type="password"
-            placeholder="Confirm New Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Resetting..." : "Reset Password"}
-          </button>
-        </form>
-      </div>
-    )
+          {loading ? "Resetting..." : "Reset Password"}
+        </button>
+      </form>
+    </div>
   );
 };
 
