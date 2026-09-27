@@ -28,7 +28,7 @@ const PUBLIC_ROUTES = [
   "/api/auth/callback",
   "/api/auth/resetpassword",
   "/api/auth/resetPassword",
-  "api/auth/refresh",
+  "/api/auth/refresh",
 ];
 
 // =========================================================
