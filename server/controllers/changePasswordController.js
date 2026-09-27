@@ -86,7 +86,7 @@ export const resetpassword = async (req, res) => {
 
         // Configure where the user will be redirected after clicking the email link
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${process.env.FRONTEND_URL}/auth/change-password`,
+            redirectTo: `https://assetly-taupe.vercel.app/auth/change-password`,
         });
 
         if (error) {
