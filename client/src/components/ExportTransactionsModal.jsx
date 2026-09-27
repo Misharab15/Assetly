@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LuDownload, LuX } from 'react-icons/lu';
 import { toast } from 'react-toastify';
-import API from "../Api/axios";
+import API, { getAccessToken, setAccessToken } from "../Api/axios";
 
 const ExportTransactionsModal = ({
     onClose,
@@ -15,7 +15,19 @@ const ExportTransactionsModal = ({
         try {
             setExporting(true);
 
-            // Use your configured API instance so cookies are sent automatically
+            // Proactively get a fresh access token if memory is empty after a page reload
+            if (!getAccessToken()) {
+                try {
+                    const refreshResponse = await API.post('/api/auth/refresh');
+                    if (refreshResponse.data?.access_token) {
+                        setAccessToken(refreshResponse.data.access_token);
+                    }
+                } catch (refreshErr) {
+                    console.error("Auto-refresh failed:", refreshErr);
+                }
+            }
+
+            // Use your configured API instance with blob response type
             const response = await API.get('/api/transactions/export', {
                 params: {
                     format: format,
@@ -118,7 +130,7 @@ const ExportTransactionsModal = ({
                     <button
                         onClick={onClose}
                         disabled={exporting}
-                        className="px-4 py-2 rounded-md bg-[#222] text-white hover:bg-[#2a2a2a] transition-colors cursor-pointer"
+                        className="px-4 py-2 rounded-md bg-[#222] text-white hover:bg-[#2a2a2a] transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         Cancel
                     </button>
@@ -126,7 +138,7 @@ const ExportTransactionsModal = ({
                     <button
                         onClick={handleExport}
                         disabled={exporting}
-                        className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2285c3] text-white hover:bg-[#1a6b9c] disabled:opacity-50 transition-colors cursor-pointer"
+                        className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2285c3] text-white hover:bg-[#1a6b9c] transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         <LuDownload size={16} />
 
