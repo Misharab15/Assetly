@@ -23,7 +23,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (loading) return; // Prevent multiple submissions
+    if (loading) return;
 
     setLoading(true);
 
@@ -31,8 +31,9 @@ const ForgotPassword = () => {
       const { data } = await API.post(`/api/auth/resetpassword`, formData);
 
       if (data.success) {
-        toast.success("Email sent");
-        navigate("/auth/login");
+        toast.success("Reset code sent to your email!");
+        // Redirect them straight to the change password page with their email pre-filled (optional)
+        navigate("/auth/change-password", { state: { email: formData.email } });
       } else {
         toast.error(data.message || "Failed to send reset link!");
       }
