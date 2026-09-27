@@ -172,6 +172,10 @@ export const googleLogin = async (req, res) => {
                     redirectTo:
                         process.env.SERVER_ORIGIN +
                         '/api/auth/callback',
+                    queryParams: {
+                        access_type: 'offline',
+                        prompt: 'consent',
+                    },
                 },
             });
 
