@@ -30,9 +30,9 @@ app.use(helmet({
     hsts: false, // Disable HSTS (HTTPS forcing)
 }));
 
-
+// "https://assetly-taupe.vercel.app"
 app.use(cors({
-    origin: "https://assetly-taupe.vercel.app",
+    origin: "http://localhost:5173",
     credentials: true,
 }));
 

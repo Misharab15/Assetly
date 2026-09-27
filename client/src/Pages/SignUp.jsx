@@ -46,7 +46,7 @@ const SignUp = () => {
     setIsLoading(true);
 
     try {
-      const { data } = await API.post(`/api/auth/register`, formData);
+      const { data } = await API.post(`/api/auth/signup`, formData);
 
       if (data.success) {
         toast.success(data.message || "Account created! Please check your email to confirm.");
