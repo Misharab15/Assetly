@@ -13,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import SignUp from './Pages/SignUp';
 import Login from './Pages/Login';
 import ForgotPassword from './Pages/ForgotPassword';
-import AuthCallback from './Pages/authCallback';
 import ChangePassword from './Pages/ChangePassword';
 
 // Context
@@ -31,6 +30,7 @@ import Overview from './Pages/Overview';
 import Accounts from './Pages/Accounts';
 import Transactions from './Pages/Transactions';
 import Settings from './Pages/Settings';
+import AuthCallback from './Pages/authCallback';
 
 // Components
 import Navbar from './components/Navbar';

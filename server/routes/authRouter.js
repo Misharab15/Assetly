@@ -11,7 +11,8 @@ import {
     updateForgottenPassword,
     googleLogin,
     callback,
-    verifyAndResetPassword
+    verifyAndResetPassword,
+    setAuthCookie
 } from '../controllers/authController.js';
 
 import authenticateUser from '../middleware/authMiddleware.js';
@@ -34,6 +35,8 @@ router.post(
     '/update-forgotten-password',
     updateForgottenPassword
 );
+
+router.post('/set-cookie', setAuthCookie);
 
 router.post('/verify-and-reset', verifyAndResetPassword);
 

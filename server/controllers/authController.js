@@ -163,25 +163,18 @@ export const refresh = async (req, res) => {
 // =========================================================
 // GOOGLE LOGIN
 // =========================================================
+// 1. Update your existing googleLogin controller
 export const googleLogin = async (req, res) => {
     try {
-        const { data, error } =
-            await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo:
-                        process.env.SERVER_ORIGIN +
-                        '/api/auth/callback',
-                    queryParams: {
-                        access_type: 'offline',
-                        prompt: 'consent',
-                    },
-                },
-            });
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                // Send Google straight to your frontend React router
+                redirectTo: process.env.CLIENT_ORIGIN + '/auth/callback',
+            },
+        });
 
-        if (error) {
-            throw error;
-        }
+        if (error) throw error;
 
         return res.status(200).json({
             success: true,
@@ -189,12 +182,25 @@ export const googleLogin = async (req, res) => {
         });
     } catch (err) {
         console.error('Google login error:', err);
-
         return res.status(500).json({
             success: false,
             message: err.message || 'Google login failed',
         });
     }
+};
+
+// 2. Add this NEW controller at the bottom of the file
+export const setAuthCookie = (req, res) => {
+    const { refresh_token } = req.body;
+    
+    if (!refresh_token) {
+        return res.status(400).json({ success: false, message: 'No token provided' });
+    }
+
+    // REFRESH_COOKIE_OPTS is already defined at the top of your file
+    res.cookie('refresh_token', refresh_token, REFRESH_COOKIE_OPTS);
+
+    return res.status(200).json({ success: true, message: 'Cookie set' });
 };
 
 // =========================================================
