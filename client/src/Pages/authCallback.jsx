@@ -17,6 +17,15 @@ const AuthCallback = () => {
     const handleCallback = async () => {
       const login = searchParams.get("login");
       const error = searchParams.get("error");
+      const code = searchParams.get("code");
+
+      // If Supabase returns code directly to frontend, forward it to backend callback
+      if (code && !login) {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+        const callbackUrl = `${backendUrl}/api/auth/callback?code=${encodeURIComponent(code)}`;
+        window.location.replace(callbackUrl);
+        return;
+      }
 
       // Google/Supabase authentication failed
       if (error) {
