@@ -20,7 +20,7 @@ const PLATFORM_COLORS = {
   "metatrader": "#0078D7"
 };
 
-// 💀 Skeleton Loader Component
+// Skeleton Loader Component
 function TransactionsSkeleton() {
   return (
     <div className="animate-pulse space-y-6">

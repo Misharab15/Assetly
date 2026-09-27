@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LuDownload, LuX } from 'react-icons/lu';
 import { toast } from 'react-toastify';
+import API from "../Api/axios";
 
 const ExportTransactionsModal = ({
     onClose,
@@ -9,47 +10,25 @@ const ExportTransactionsModal = ({
 
     const [format, setFormat] = useState('xlsx');
     const [exporting, setExporting] = useState(false);
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
     const handleExport = async () => {
         try {
             setExporting(true);
 
-            let url = `${backendUrl}/api/transactions/export?format=${format}`;
-
-            console.log("Backend URL:", backendUrl);
-            console.log("Export URL:", url);
-
-            if (selectedAccount) {
-                url += `&account=${encodeURIComponent(selectedAccount)}`;
-            }
-
-            const token = localStorage.getItem("access_token");
-
-            if (!token) {
-                toast.error("You are not logged in");
-                return;
-            }
-
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+            // Use your configured API instance so cookies are sent automatically
+            const response = await API.get('/api/transactions/export', {
+                params: {
+                    format: format,
+                    ...(selectedAccount && { account: selectedAccount })
+                },
+                responseType: 'blob' // Required to handle file downloads properly
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to export transactions');
-            }
-
-            const blob = await response.blob(); // blob tells browser that the response is a file
-
+            const blob = new Blob([response.data]);
             const downloadUrl = window.URL.createObjectURL(blob);
-
             const link = document.createElement('a');
 
             link.href = downloadUrl;
-
             link.download =
                 format === 'xlsx'
                     ? 'assetly-transactions.xlsx'
@@ -58,22 +37,16 @@ const ExportTransactionsModal = ({
                         : 'assetly-transactions.json';
 
             document.body.appendChild(link);
-
             link.click();
-
             link.remove();
-
             window.URL.revokeObjectURL(downloadUrl);
 
             toast.success('Transactions exported successfully!');
-
             onClose();
 
         } catch (error) {
             console.error('Export error:', error);
-
             toast.error('Failed to export transactions');
-
         } finally {
             setExporting(false);
         }
@@ -116,7 +89,7 @@ const ExportTransactionsModal = ({
                     <select
                         value={format}
                         onChange={(e) => setFormat(e.target.value)}
-                        className="w-full bg-[#111] text-white border border-[#333] rounded-md px-3 py-2.5 focus:outline-none focus:border-[#2285c3] cursor-pointer focus:outline-none"
+                        className="w-full bg-[#111] text-white border border-[#333] rounded-md px-3 py-2.5 focus:outline-none focus:border-[#2285c3] cursor-pointer"
                     >
                         <option value="xlsx" className="cursor-pointer">
                             Excel (.xlsx)
@@ -145,7 +118,7 @@ const ExportTransactionsModal = ({
                     <button
                         onClick={onClose}
                         disabled={exporting}
-                        className="px-4 py-2 rounded-md bg-[#222] text-white hover:bg-[#2a2a2a] transition-colors"
+                        className="px-4 py-2 rounded-md bg-[#222] text-white hover:bg-[#2a2a2a] transition-colors cursor-pointer"
                     >
                         Cancel
                     </button>
@@ -153,7 +126,7 @@ const ExportTransactionsModal = ({
                     <button
                         onClick={handleExport}
                         disabled={exporting}
-                        className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2285c3] text-white hover:bg-[#1a6b9c] disabled:opacity-50 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2285c3] text-white hover:bg-[#1a6b9c] disabled:opacity-50 transition-colors cursor-pointer"
                     >
                         <LuDownload size={16} />
 
