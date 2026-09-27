@@ -67,14 +67,14 @@ const ChangePassword = () => {
 
         <input
           type="text"
-          placeholder="Enter the 6-digitOTP code"
+          placeholder="Enter the 6-digit OTP code"
           inputMode="numeric"
           pattern="[0-9]*"
           value={token}
           onChange={(e) => setToken(e.target.value)}
           required
           maxLength={6}
-          className="w-full p-2 bg-[#f9f9f9] border border-gray-300 rounded-lg text-gray-900 tracking-widest text-center font-mono font-bold text-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         <input
