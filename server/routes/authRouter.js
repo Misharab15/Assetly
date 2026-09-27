@@ -9,6 +9,8 @@ import {
     changePassword,
     resetpassword,
     updateForgottenPassword,
+    googleLogin,
+    callback,
 } from '../controllers/authController.js';
 
 import authenticateUser from '../middleware/authMiddleware.js';
@@ -31,6 +33,9 @@ router.post(
     '/update-forgotten-password',
     updateForgottenPassword
 );
+
+router.get('/googleLogin', googleLogin);
+router.get('/callback', callback);
 
 // =========================================================
 // PROTECTED ROUTES
