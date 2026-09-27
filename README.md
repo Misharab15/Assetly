@@ -8,6 +8,11 @@ The application is designed to give users a clear view of their financial activi
 
 ---
 
+## 👥 Authors & Contributors
+
+* **Sajjal** — *Lead/Owner* — [sajjalf23](https://github.com/sajjalf23)
+* **Muhammad Misharab Waheed** — *Full-Stack / Backend & Auth Developer* — [YourGitHubUsername](https://github.com/YourGitHubUsername)
+
 ## ✨ Features
 
 ### 📊 Financial Dashboard
