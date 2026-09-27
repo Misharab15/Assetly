@@ -11,7 +11,7 @@ The application is designed to give users a clear view of their financial activi
 ## 👥 Authors & Contributors
 
 * **Sajjal** — *Lead/Owner* — [sajjalf23](https://github.com/sajjalf23)
-* **Muhammad Misharab Waheed** — *Full-Stack / Backend & Auth Developer* — [YourGitHubUsername](https://github.com/YourGitHubUsername)
+* **Misharab Waheed** — *Full-Stack / Backend & Auth Developer* — [misharab15](https://github.com/misharab15)
 
 ## ✨ Features
 
