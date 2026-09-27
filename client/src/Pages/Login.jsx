@@ -76,14 +76,31 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const { data } = await API.get(`/api/auth/googleLogin`);
-      if (data.url) window.location.href = data.url;
-    } catch (error) {
-      toast.error("Google login failed");
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const { data } = await API.get(`/api/auth/googleLogin`);
+  //     if (data.url) window.location.href = data.url;
+  //   } catch (error) {
+  //     toast.error("Google login failed");
+  //   }
+  // };
+
+  export const googleLogin = async (req, res) => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: `${process.env.BACKEND_URL}/api/auth/callback`
+        }
+    });
+
+    if (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'OAuth initialization failed' });
     }
-  };
+
+    return res.json({ url: data.url });
+};
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0d0d0d]">
