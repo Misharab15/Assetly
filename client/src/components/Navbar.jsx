@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { LuHouse, LuNewspaper, LuChartNoAxesCombined, LuBitcoin, LuSettings } from "react-icons/lu";
 import { MdOutlineAccountBalance, MdReceiptLong } from "react-icons/md";
-import { FiTrendingUp } from "react-conds/fi"; // Note: keeping your imports intact
+import { FiTrendingUp } from "react-icons/fi"; 
 import { FaExchangeAlt } from "react-icons/fa";
 import { HiShoppingBag } from "react-icons/hi2";
 import { useState, useContext } from 'react';
